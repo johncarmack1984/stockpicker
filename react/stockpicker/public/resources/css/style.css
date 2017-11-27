@@ -30,6 +30,10 @@ ul {
   list-style: none;
 }
 
+ul:active {
+  list-style: none;
+}
+
 input {
     /*border-style:*/
     border-radius: 0;
@@ -223,6 +227,7 @@ nav {
 }
 
 .main-nav li a:hover {
+
     border-bottom: 3px solid rgba(159,127,  0,1);
     transition: border-bottom 0.2s;
 
@@ -519,9 +524,11 @@ nav {
 .sidebar-search {
   height: 40px;
   display: inline-block;
-  border: 1pt solid rgba(0,0,0,0.5);
-  padding: 0% 1%;
-  width: 62.5%;
+  /*border: 1pt solid rgba(0,0,0,0.5);*/
+  border: none;
+  padding: 0% 0%;
+  margin: 0 0;
+  width: 100%;
 }
 
 .sidebar-search-field {
@@ -530,7 +537,7 @@ nav {
   margin: 0% 0% 0% 0%;
   /*border:1px solid;*/
   border: none;
-
+  /*width: 62.5%;*/
   margin: 0 0;
 }
 
@@ -538,13 +545,13 @@ nav {
   border:none;
   display:inline-block;
   margin: 0 0;
-  width: 100%;
+  width: 62.5%;
 }
 
 .react-autosuggest__input {
-  /*border: 1px solid;*/
   min-width: 100%;
-  border:none;
+  border: 1pt solid rgba(0,0,0,0.5);
+  /*border:none;*/
   background:none;
   outline:none;
   padding:0 0;
@@ -571,19 +578,19 @@ nav {
 
 
 
-
-
 .sidebar-button {
-    display: inline-grid;
+    display: inline-block;
     background-color: rgba(  8,134, 77,0.8);
     background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.2));
     border: none;
+    vertical-align: top;
     border-radius: 0;
     height: 40px;
     color: rgba(255,255,255,1);
     text-decoration: none;
-    padding: 10px 0 10px 0;
-    margin: 0;
+    padding: 0 0 0 0;
+    margin: 0 0;
+    width: 37.5%;
 }
 
 .sidebar-button:hover {
@@ -592,6 +599,34 @@ nav {
 
 .sidebar-button:active {
     background-color: rgba(  0, 81, 44,1);
+}
+
+.set-time-frame {
+  margin: 0 1%;
+  padding: 10px 0;
+  float:none;
+  width: 100%;
+  text-align: center;
+  list-style: none;
+  transition: border-bottom 0.2s;
+}
+
+.set-time-frame li {
+  display: inline;
+  cursor: pointer;
+  vertical-align: bottom;
+  margin: 0 1%;
+  text-align: center;
+  padding: 0 0;
+  text-decoration: none;
+  letter-spacing: 2px;
+  border-bottom: 3px solid transparent;
+  transition: border-bottom 0.2s;
+}
+
+.set-time-frame li a:hover {
+  border-bottom: 3px solid rgba(159,127,  0,1);
+  transition: border-bottom 0.2s;
 }
 
 
@@ -724,6 +759,8 @@ input[type=checkbox] {
     font-size: 160%;
     float:right;
     margin: 0.5% 3% 0 10px;
+    cursor: pointer;
+    z-index: 8000;
 
 }
 
@@ -826,7 +863,7 @@ input[type=checkbox] {
     display: inline-block;
     background-color: rgba( 54,  2, 78,1);
     margin: 0;
-    min-height: 84vh;
+    /*min-height: 84vh;*/
     max-height: 100vh;
 }
 

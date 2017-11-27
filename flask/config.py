@@ -1,5 +1,7 @@
 import os
 
+CORS_HEADERS              = 'Content-Type'
+
 FRONTEND_URL              = 'http://localhost:3000'
 FRONTEND_PATH             = '/Users/johncarmack/Dropbox/sites/stockpicker/react/stockpicker'
 QUANDL_API_KEY            = 'bTsRUM_EehoY-c3npqhG'

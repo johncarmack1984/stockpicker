@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { fetchStockData } from '../actions/index';
+
 import Autosuggest from 'react-autosuggest';
-//var requireFromUrl = require('require-from-url/sync');
-
-
 
 // import json for autocomplete
 const tickerNamePairs = require('../resources/ticker_name_pairs.json');
-//const tickerNamePairs = requireFromUrl("https://spio-middleware-resources.s3.amazonaws.com/ticker_name_pairs.json");
 
 function escapeRegexCharacters(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -39,12 +39,13 @@ class SearchBar extends Component {
   constructor(props) {
     super(props);
 
-    this.handleClearClick = this.handleClearClick.bind(this);
-
     this.state = {
       value: '',
       suggestions: []
     };
+
+    this.handleClearClick = this.handleClearClick.bind(this);
+    this.onFormSubmit = this.onFormSubmit.bind(this);
   }
 
   handleClearClick() {
@@ -71,6 +72,12 @@ class SearchBar extends Component {
     });
   };
 
+  onFormSubmit(event) {
+    event.preventDefault();
+    this.props.fetchStockData(this.state.value, '1M');
+    this.setState({ value: '' });
+  };
+
   render() {
     const { value, suggestions } = this.state;
 
@@ -87,24 +94,31 @@ class SearchBar extends Component {
 
     return (
       <div className="row sidebar-search">
-        <span className="sidebar-search-field">
-          <Autosuggest
-            suggestions={suggestions}
-            onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-            onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-            getSuggestionValue={getSuggestionValue}
-            renderSuggestion={renderSuggestion}
-            inputProps={inputProps}
-            highlightFirstSuggestion={true}
-            alwaysRenderSuggestions={false}
-          />
-          <span className="close-icon-container">
-            {clearButton}
+        <form onSubmit={this.onFormSubmit}>
+          <span className="sidebar-search-field">
+            <Autosuggest
+              suggestions={suggestions}
+              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
+              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+              getSuggestionValue={getSuggestionValue}
+              renderSuggestion={renderSuggestion}
+              inputProps={inputProps}
+              highlightFirstSuggestion={true}
+              alwaysRenderSuggestions={false}
+            />
+            <span className="close-icon-container">
+              {clearButton}
+            </span>
+            <button type="submit" className="sidebar-button">+</button>
           </span>
-        </span>
+        </form>
       </div>
     );
   }
 }
 
-export default SearchBar;
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({ fetchStockData }, dispatch);
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);

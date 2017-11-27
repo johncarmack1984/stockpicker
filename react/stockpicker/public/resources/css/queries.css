@@ -89,11 +89,6 @@
     .sticky .mobile-nav-icon i.ion-close-round { color: #fff; }
 
     select { width: 62.5%; }
-    .sidebar-search { width: 62.5%; }
-    .sidebar-button {
-        width: 37.5%;
-        text-align: center;
-    }
     .sidebar {
         max-height: 1000vh;
         min-height: none;

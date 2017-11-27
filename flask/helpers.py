@@ -5,13 +5,20 @@ import datetime
 def get_start_date(time_frame):
     today = datetime.datetime.today()
     if time_frame == '1W':
-        start_date = today - datetime.timedelta(days=7)
+        days_ago = 7
+        start_date = today - datetime.timedelta(days=days_ago)
     elif time_frame == '1M':
-        start_date = today - datetime.timedelta(days=30)
+        days_ago = 30
+        start_date = today - datetime.timedelta(days=days_ago)
     elif time_frame == '3M':
-        start_date = today - datetime.timedelta(days=90)
+        days_ago = 90
+        start_date = today - datetime.timedelta(days=days_ago)
     elif time_frame == '1Y':
-        start_date = today - datetime.timedelta(days=365)
+        days_ago = 365
+        start_date = today - datetime.timedelta(days=days_ago)
+    elif time_frame == '5Y':
+        days_ago = 1826
+        start_date = today - datetime.timedelta(days=days_ago)
     elif time_frame == '':
         start_date = ''
 
