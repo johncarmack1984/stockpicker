@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import StockDataReducer from './reducer_stockdata';
+import stockData from './reducer_stockdata';
+import toolbarVariables from './reducer_toolbar';
 
 const rootReducer = combineReducers({
-  stockData: StockDataReducer
+  stockData,
+  toolbarVariables
 });
 
 export default rootReducer;

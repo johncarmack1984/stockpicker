@@ -1,14 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-
 import SmoothCollapse from 'react-smooth-collapse';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
-import { dropStockData } from '../actions/index';
+import { fetchStockData, replaceStockData, dropStockData } from '../actions/index';
 
-//come back to this one... component for setting the timeFrame variable
-//import SetTimeFrame from './set_time_frame';
-//<SetTimeFrame />
 
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
@@ -20,21 +16,46 @@ class StockPick extends Component {
       super(props)
       this.state = {
         showStockPick: true,
-        showStockDetail: true,
-        arrowClass: 'ion-arrow-down-b stock-arrow',
+        showStockDetail: this.props.toolbarVariables.expandAll,
+        arrowClass: this.props.toolbarVariables.expandArrowClass,
       }
       this.handleDeleteClick = this.handleDeleteClick.bind(this);
-    }
-
-  handleDeleteClick() {
-    //if (confirm(`Delete ${this.props.ticker}?`)) {
-      this.setState({ showStockPick: false });
-      this.props.dropStockData(this.props.ticker);
-    //} else {
-
-    //}
   }
 
+  handleDeleteClick() {
+    this.props.dropStockData(this.props.ticker);
+    this.setState({ showStockPick: false });
+  }
+
+  getInitialProps() {
+
+  }
+  getInitialState() {
+
+  }
+  componentWillReceiveProps(nextProps) {
+    // handle timeFrame change
+    if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame) {
+      this.props.dropStockData(this.props.ticker);
+      this.props.fetchStockData(this.props.ticker, nextProps.toolbarVariables.timeFrame);
+      //
+      //this.props.replaceStockData(this.props.index, this.props.ticker, this.props.toolbarVariables.timeFrame)
+    }
+    // handle expand/collapse all
+    if (nextProps.toolbarVariables.expandAll !== this.props.toolbarVariables.expandAll) {
+      if (nextProps.toolbarVariables.expandAll) {
+        this.setState({
+          showStockDetail: true,
+          arrowClass: 'ion-arrow-down-b stock-arrow'
+        });
+      } else if (!nextProps.toolbarVariables.expandAll) {
+        this.setState({
+          showStockDetail: false,
+          arrowClass: 'ion-arrow-right-b stock-arrow'
+        });
+      }
+    }
+  }
   toggleDetail() {
     this.setState({ showStockDetail: !this.state.showStockDetail }) /*}*/
     if (this.state.arrowClass === 'ion-arrow-right-b stock-arrow'){
@@ -44,6 +65,10 @@ class StockPick extends Component {
     }
   }
   render() {
+    /*console.log(this.props.toolbarVariables);
+    if (!this.props.toolbarVariables.expandAll) {
+      this.handleCollapse();
+    }*/
     //const endDate = this.props.data.end_date
     const prices = this.props.data.prices;
     const logReturn = round(this.props.data.log_return*100,2);
@@ -52,16 +77,17 @@ class StockPick extends Component {
     //const startDate = this.props.data.start_date;
     const ticker = this.props.data.ticker;
     const volatility = round(this.props.data.volatility*100,2);
-
-
+    //console.log(`${ticker}: expandAll = ${this.props.toolbarVariables.expandAll}`);
+    //console.log(this.props.index);
     const StockDetail = (props) => (
         <div className="col span-2-of-2">
             <div className="small-chart row">
               <Sparklines
                 data={prices}
                 style={{
-                  //background: "rgba( 54,  2, 78,0.9)",
-                  //backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.3))"
+                  background: "rgba( 54,  2, 78,0.9)",
+                  backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.1))",
+                  borderRadius: "5px"
                 }}
                 margin={10}
                 height={80}>
@@ -92,12 +118,11 @@ class StockPick extends Component {
         </div>
 
     )
-    //console.log(this.props.data)
+    //console.log(this.props);
     return (
       <span>
-        <SmoothCollapse expanded={this.state.showStockPick}>
+        <SmoothCollapse expanded={this.state.showStockPick} /*expanded={true}*/>
           <div className="stock-pick">
-
               <div
                 className="row stock-pick-header"
                 key={ticker}>
@@ -108,7 +133,7 @@ class StockPick extends Component {
                   className="stock-pick-price">
                   &nbsp;$&nbsp;{price}
                 </span>
-
+                <input type="checkbox" className="stock-check" defaultChecked />&nbsp;&nbsp;
                 <span className="stock-pick-click">
                   <a
                     onClick={this.toggleDetail.bind(this)}
@@ -136,18 +161,25 @@ class StockPick extends Component {
   }
 };
 
+function mapStateToProps({ stockData, toolbarVariables }) {
+  return {
+    stockData,
+    toolbarVariables
+  };
+}
+
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ dropStockData }, dispatch);
+  return bindActionCreators({ dropStockData, fetchStockData, replaceStockData }, dispatch);
 }
 
 
-export default connect(null, mapDispatchToProps)(StockPick);
+export default connect(mapStateToProps, mapDispatchToProps)(StockPick);
 
 /*
 
 
 <div >
-    <input type="checkbox" className="stock-check" checked />&nbsp;
+
 
     <a className="js--ideal-weight"><span className="ideal-weight js--ideal-weight">18&#37;</span></a>
       <span className="num-shares">1</span>

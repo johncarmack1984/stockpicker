@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-
-import StockPick from '../containers/stock_pick';
 import { CSSTransitionGroup } from 'react-transition-group';
+//import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import SmoothCollapse from 'react-smooth-collapse';
+import Toolbar from './toolbar';
+import StockPick from '../containers/stock_pick';
 
 class PortfolioDrawer extends Component {
+
+  renderToolbar() {
+    let expanded;
+    if (this.props.stockData.length > 0) {
+      expanded = true;
+    } else {
+      expanded = true;
+    }
+    return (
+      <SmoothCollapse expanded={expanded}>
+        <Toolbar />
+      </SmoothCollapse>
+    );
+  }
+
+
   renderList(stockData, index) {
     return (
       <li key={stockData.ticker}>
@@ -14,16 +32,14 @@ class PortfolioDrawer extends Component {
           //timeFrame={this.props.timeFrame}
           data={stockData} />
       </li>
-    );
-
+    )
   }
-  onSortEnd = ({oldIndex, newIndex}) => {
-    this.props.rearrangeStockList(oldIndex, newIndex);
-  };
 
   render() {
+    /*console.log(this.props.stockData);*/
     return (
       <div>
+        {this.renderToolbar()}
         <ul className="stock-picks row">
           <CSSTransitionGroup
             transitionName="stock-pick-transition"
@@ -48,16 +64,15 @@ export default connect(mapStateToProps)(PortfolioDrawer);
 
 /*
 //sortable list: https://github.com/clauderic/react-sortable-hoc
-import {SortableContainer, SortableElement, arrayMove} from 'react-sortable-hoc';
+
+import {SortableContainer, SortableElement} from 'react-sortable-hoc';
 import { bindActionCreators } from 'redux';
 import { rearrangeStockList } from '../actions/index';
 
 const SortableItem = SortableElement(({value}) => {
   return (
     <li key={value.ticker}>
-      <StockPick
-        ticker={value.ticker}
-        data={value} />
+      <StockPick data={value} />
     </li>
   );
 })
@@ -77,6 +92,10 @@ const SortableList = SortableContainer(({items}) => {
   );
 });
 
+onSortEnd = ({oldIndex, newIndex}) => {
+  this.props.rearrangeStockList(oldIndex, newIndex);
+  //console.log(this.props.stockData);
+};
 
 <div>
   <SortableList
@@ -90,6 +109,10 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators({ rearrangeStockList }, dispatch);
 }
 
+, mapDispatchToProps
+
+// non-sortable list
+
 
 
 Loading cell:
@@ -97,9 +120,22 @@ Loading cell:
   //loadingNum = loadingNum - 1;
   //return true;//
 //});
-  <SmoothCollapse expanded={showLoadingCell}>
-    {loadingCell()}
-  </SmoothCollapse>
+
+/*
+renderLoadingBar() {
+  let expanded;
+  if (loadingNum > 0) {
+    expanded = true;
+  } else {
+    expanded = false;
+  }
+  return (
+    <SmoothCollapse expanded={expanded}>
+      <LoadingBar />
+    </SmoothCollapse>
+  )
+}
+
 
 miscellaneous code that has been useful at one point
 
@@ -123,7 +159,9 @@ miscellaneous code that has been useful at one point
       //)
     //}
 
-
+    <SmoothCollapse expanded={showLoadingCell}>
+      {loadingCell()}
+    </SmoothCollapse>
 
 
 */

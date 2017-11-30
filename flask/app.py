@@ -49,7 +49,7 @@ def fetch_stock_data(ticker, time_frame):
     start_date = get_start_date(time_frame)
     name = quandl.Dataset('EOD/' + ticker).name.split(" (" + ticker + ")")[0]
     stock = quandl.get("EOD/" + ticker + ".11", start_date=start_date)
-    dates = list(stock.reset_index()['Date'].dt.strftime(date_format="%Y-%m-%d"))
+    #dates = list(stock.reset_index()['Date'].dt.strftime(date_format="%Y-%m-%d"))
     prices = list(stock['Adj_Close'])
     log_returns = np.log(stock['Adj_Close'] / stock['Adj_Close'].shift(1))
     log_return_over_period = log_returns.mean() * len(prices)

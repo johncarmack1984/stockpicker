@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { fetchStockData } from '../actions/index';
 
+
 import Autosuggest from 'react-autosuggest';
 
 // import json for autocomplete
@@ -20,7 +21,6 @@ function getSuggestions(value) {
   }
 
   const regex = new RegExp('\\b' + escapedValue, 'i');
-
   return (tickerNamePairs.filter(tickerNamePair => regex.test(tickerNamePair.string)));
 
 }
@@ -74,7 +74,7 @@ class SearchBar extends Component {
 
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.fetchStockData(this.state.value, '1M');
+    this.props.fetchStockData(this.state.value, this.props.toolbarVariables.timeFrame);
     this.setState({ value: '' });
   };
 
@@ -117,8 +117,16 @@ class SearchBar extends Component {
   }
 }
 
+function mapStateToProps({ toolbarVariables }) {
+  // Whatever is returned from here will show up as props
+  // inside of toolbar
+  return {
+    toolbarVariables,
+  };
+}
+
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({ fetchStockData }, dispatch);
 }
 
-export default connect(null, mapDispatchToProps)(SearchBar);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

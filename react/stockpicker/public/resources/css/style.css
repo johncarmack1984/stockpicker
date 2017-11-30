@@ -11,10 +11,16 @@
 }
 
 .container {
+  /*max-height: 100vh;*/
+}
+
+.App {
 
 }
 
-html,
+html {
+  /*height: 100%;*/
+}
 body {
     background-color: #fff;
     color: #555;
@@ -23,7 +29,7 @@ body {
     text-rendering: optimizeLegibility;
     line-height: 145%;
     overflow-x: hidden;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
 ul {
@@ -31,6 +37,10 @@ ul {
 }
 
 ul:active {
+  list-style: none;
+}
+
+li {
   list-style: none;
 }
 
@@ -137,16 +147,18 @@ a {
 
 .container {
     width: 100vw;
-    height: 100vh;
+    /*max-height: 100vh;*/
     margin: 0px auto 0 auto;
-    border-width: 2px;
-
-
+    border-width: 0px;
 }
 
 /* -------------------------------------------------------------------------------------------------*/
 /* HEADER */
 /* -------------------------------------------------------------------------------------------------*/
+
+header {
+  /*min-height: 10vh;*/
+}
 
 .splash {
     position:static;
@@ -159,6 +171,7 @@ a {
     background-attachment: fixed;
     margin: 0px 0 0px 0;
     padding: 7px 2% 10px 2%;
+    /*max-height: 14vh;*/
 }
 
 
@@ -515,7 +528,7 @@ nav {
     display: inline-block;
     margin: 0;
     padding: 0;
-    max-height: 84vh;
+    max-height: 75vh;
     min-height: none;
 }
 
@@ -547,6 +560,9 @@ nav {
   margin: 0 0;
   width: 62.5%;
 }
+.react-autosuggest__container--open {
+
+}
 
 .react-autosuggest__input {
   min-width: 100%;
@@ -558,12 +574,27 @@ nav {
   margin:0 0;
 }
 
+.react-autosuggest__input--open {
+
+}
+
 .react-autosuggest__suggestions-container {
   overflow-x: hidden;
   overflow-y: scroll;
   max-height: 66vh;
-  min-width: 75vw;
+  min-width: 44vw;
   max-width: 95vw;
+}
+
+.react-autosuggest__suggestions-container--open {
+  position: relative;
+  z-index: 2;
+  margin-top: -11px;
+}
+
+.react-autosuggest__suggestions-list {
+  position: relative;
+  z-index: 9000;
 }
 
 .close-icon-container {
@@ -630,6 +661,100 @@ nav {
 }
 
 
+/* ------------------------------------ TOOLBAR/CONFIG ------------------------------------------- */
+
+
+.sidebar-toolbar {
+  margin: 0px 0px 0px 0px;
+  background-color: #f4f4f4;
+  background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.04));
+  font-size: 91%;
+  width: 100%;
+  padding: 5px 15px 0px 15px;
+  color: rgba(0,0,0,0.1);
+}
+
+.sidebar-toolbar-header {
+
+}
+
+.sidebar-toolbar a,
+.sidebar-toolbar a:visited {
+    cursor: pointer;
+    text-decoration: none;
+    color: rgb(85, 85, 85);
+    font-weight: 400;
+
+}
+
+.sidebar-toolbar:hover {
+    /*background-color: rgba(159,127,0,0.25);*/
+    transition: transform 0.1s, background-color 0.2s;
+
+}
+.sidebar-toolbar a:hover {
+    color: rgba(159,127,  0,1);
+    transition: color 0.2s;
+}
+
+.sidebar-toolbar:active {
+    /*background-image: linear-gradient(rgba(255,255,255, 0.01), rgba(255,255,255, 0.08));*/
+}
+
+.sidebar-toolbar:before {
+  display: none;
+  height: 1px;
+  width: 80px;
+  background-color: rgba(0, 0, 0, 0.54);
+  content: " ";
+  margin: 0px auto 0px auto;
+}
+
+.sidebar-toolbar-expand-collapse {
+  float: left;
+  margin-top: 9px;
+  color: rgba(85, 85, 85,1);
+  font-weight: 500;
+}
+
+.sidebar-toolbar-select-timeframe {
+  display: inline-block;
+  color: rgba(85, 85, 85,1);
+  font-weight: 300;
+  float: right;
+  margin: 0 32.5% 0 0 ;
+  color: rgba(85, 85, 85,1);
+  text-align: right;
+}
+
+.sidebar-toolbar select {
+  font-size: 97%;
+  padding: 5px 5px 0px 5px;
+  color: rgb(85, 85, 85);
+  background: transparent;
+  border: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  /*border: none; - if you want the border removed*/
+}
+
+.sidebar-toolbar select:hover {
+  background-color: white;
+  transform: translateY(-1px) translateX(-1px);
+  cursor: pointer;
+}
+
+.sidebar-toolbar select:-ms-expand {
+    display: none;
+}
+
+.sidebar-toolbar-sort-by {
+  float: right;
+  margin: 0 32.5% 0 0 ;
+  color: rgba(85, 85, 85,1);
+}
+
 /* -------------------------------------- PORTFOLIO ----------------------------------------------- */
 
 .loading-cell {
@@ -646,7 +771,7 @@ nav {
 
 .stock-picks {
     display: block;
-    height: calc(84vh - 40px);
+    max-height: calc(75vh - 85px);
     overflow-y: scroll;
 }
 
@@ -656,12 +781,7 @@ nav {
   text-overflow: ellipsis;
 }
 
-.stock-pick-click {
-  cursor: pointer;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+
 
 input[type=checkbox] {
     border: 1px solid rgba(85,85,85,1);
@@ -686,12 +806,21 @@ input[type=checkbox] {
 .stock-pick {
     margin: 0px 0px 0 0px;
     background-color: #f4f4f4;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.03));
+    background-image: linear-gradient(rgba(0, 0, 0, 0.00), rgba(0, 0, 0, 0.08));
     font-size: 91%;
     width: 100%;
     padding: 15px 15px 0px 15px;
     color: rgba(0,0,0,0.1);
 
+}
+
+.stock-pick-click {
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  z-index: 00;
 }
 
 .stock-symbol {
@@ -701,7 +830,7 @@ input[type=checkbox] {
 
 .stock-name {
     font-weight: 300;
-    width: 100%;
+    z-index: 700;
 
 }
 
@@ -742,7 +871,8 @@ input[type=checkbox] {
     margin: 0 1% 1% 1%;;
     font-size: 120%;
     white-space: nowrap;
-
+    z-index: 1;
+    position: relative;
 }
 
 .row div {
@@ -754,13 +884,14 @@ input[type=checkbox] {
 }
 
 .delete-button {
+    position: relative;
     color: rgba(85,85,85,0.8);
     vertical-align: bottom;
     font-size: 160%;
     float:right;
     margin: 0.5% 3% 0 10px;
     cursor: pointer;
-    z-index: 8000;
+    z-index: 1;
 
 }
 
@@ -845,8 +976,6 @@ input[type=checkbox] {
     min-width: 100%;
 }
 
-
-
 .individual-stock-chart {
     opacity: 1;
     width: 80%;
@@ -861,10 +990,25 @@ input[type=checkbox] {
 
 .main-content {
     display: inline-block;
-    background-color: rgba( 54,  2, 78,1);
+    /*background-color: rgba( 54,  2, 78,1);*/
+    /*color: rgba(193,157, 12,0.9);*/
+    color: rgb(85, 85, 85);
     margin: 0;
-    /*min-height: 84vh;*/
-    max-height: 100vh;
+    /*min-height: 70vh;
+    max-height: 80vh;*/
+    height: 75vh;
+}
+
+.main-content-parent {
+  /*position:absolute;*/
+  /*top: 50%;*/
+  /*transform: translate(0, -50%);*/
+}
+.main-content-child {
+  position:absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* --------- SELECTOR TABS ----------- */
@@ -950,12 +1094,26 @@ svg-large {
 
 
 footer {
+    /*position: absolute;*/
+    left: 0;
+    bottom: 0;
+    /*height: 8vh;*/
+    width: 100%;
+    overflow:hidden;
+  /*
+    position: static;
+    background-size:cover;
+    background-position:center;
+    width: 100%;
+    /*display: block;*/
     background-color: #333;
-    display: block;
+    /*bg-image*/
+    /*border-bottom*/
+    background-attachment: fixed;
     padding: 15px 20px;
     font-size: 80%;
-    margin: 0px auto 0 auto;
-    z-index: 0;
+    margin: 0 auto 0 auto;
+    /*z-index: 0;*/
 }
 
 .footer-nav {
@@ -1023,9 +1181,14 @@ footer {
 
 footer p {
     color: #888;
+    /*position: absolute;*/
     text-align: center;
-    margin-bottom: 0px;
-    margin-top: 0px;
+    padding: 0 0 0 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    /*bottom: 15%;*/
+    /*margin: 0 auto;*/
 }
 
 /* --------------------------------------------------------------------------------------------------*/
