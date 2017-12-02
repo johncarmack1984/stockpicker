@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { CSSTransitionGroup } from 'react-transition-group';
 //import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import SmoothCollapse from 'react-smooth-collapse';
+import SearchBar from '../containers/search_bar';
 import Toolbar from './toolbar';
 import StockPick from '../containers/stock_pick';
 
@@ -10,10 +11,10 @@ class PortfolioDrawer extends Component {
 
   renderToolbar() {
     let expanded;
-    if (this.props.stockData.length > 0) {
+    if (this.props.stockList.length > 0) {
       expanded = true;
     } else {
-      expanded = true;
+      expanded = false;
     }
     return (
       <SmoothCollapse expanded={expanded}>
@@ -22,41 +23,43 @@ class PortfolioDrawer extends Component {
     );
   }
 
-
-  renderList(stockData, index) {
+  renderList(stockList) {
     return (
-      <li key={stockData.ticker}>
+      <li key={stockList.ticker}>
         <StockPick
-          index={index}
-          ticker={stockData.ticker}
-          //timeFrame={this.props.timeFrame}
-          data={stockData} />
+          ticker={stockList.ticker}
+          name={stockList.name}/>
       </li>
     )
   }
 
   render() {
-    /*console.log(this.props.stockData);*/
+    //console.log(this.props.stockData);
     return (
-      <div>
-        {this.renderToolbar()}
-        <ul className="stock-picks row">
-          <CSSTransitionGroup
-            transitionName="stock-pick-transition"
-            transitionEnterTimeout={250}
-            transitionLeaveTimeout={250}>
-            {this.props.stockData.map(this.renderList)}
-          </CSSTransitionGroup>
-        </ul>
+      <div className="sidebar col span-1-of-3">
+        <div>
+          <div className="sidebar-tools-container">
+            <SearchBar />
+            {this.renderToolbar()}
+          </div>
+          <ul className="stock-picks row">
+            <CSSTransitionGroup
+              transitionName="stock-pick-transition"
+              transitionEnterTimeout={250}
+              transitionLeaveTimeout={250}>
+              {this.props.stockList.map(this.renderList).reverse() /* <-- reverse() sucks, fix this */}
+            </CSSTransitionGroup>
+          </ul>
+        </div>
       </div>
     )
   }
 }
 
-function mapStateToProps({ stockData }) {
-
+function mapStateToProps({ stockList, stockData }) {
   return {
-    stockData,
+    stockList,
+    stockData
   };
 }
 

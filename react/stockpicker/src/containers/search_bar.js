@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { fetchStockData } from '../actions/index';
+import { addNewStockPick } from '../actions/index';
 
 
 import Autosuggest from 'react-autosuggest';
@@ -26,7 +26,7 @@ function getSuggestions(value) {
 }
 
 function getSuggestionValue(suggestion) {
-  return suggestion.ticker;
+  return suggestion.string;
 }
 
 function renderSuggestion(suggestion) {
@@ -38,60 +38,50 @@ function renderSuggestion(suggestion) {
 class SearchBar extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       value: '',
       suggestions: []
     };
-
     this.handleClearClick = this.handleClearClick.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
-
   handleClearClick() {
     this.setState({
       value: '',
     });
   }
-
   onChange = (event, { newValue, method }) => {
     this.setState({
       value: newValue
     });
   };
-
   onSuggestionsFetchRequested = ({ value }) => {
     this.setState({
       suggestions: getSuggestions(value)
     });
   };
-
   onSuggestionsClearRequested = () => {
     this.setState({
       suggestions: []
     });
   };
-
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.fetchStockData(this.state.value, this.props.toolbarVariables.timeFrame);
+    //this.props.fetchStockData(this.state.value.split(" | ")[0], this.props.toolbarVariables.timeFrame);
+    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);
     this.setState({ value: '' });
   };
-
   render() {
     const { value, suggestions } = this.state;
-
     const inputProps = {
       placeholder: "Add stock...",
       value,
       onChange: this.onChange,
     };
-
     let clearButton;
     if (value.length >= 1) {
       clearButton = (<i className="close-icon ion-close-circled" onClick={this.handleClearClick}></i>);
     }
-
     return (
       <div className="row sidebar-search">
         <form onSubmit={this.onFormSubmit}>
@@ -126,7 +116,12 @@ function mapStateToProps({ toolbarVariables }) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return bindActionCreators({ fetchStockData }, dispatch);
+  return bindActionCreators(
+    {
+      addNewStockPick
+    },
+    dispatch
+  );
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

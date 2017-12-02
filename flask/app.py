@@ -61,6 +61,7 @@ def fetch_stock_data(ticker, time_frame):
     response = make_response(
                 jsonify(
                     name = name,
+                    time_frame = time_frame,
                     ticker = ticker.upper(),
                     start_date = str(stock.head(1).reset_index()['Date'][0])[0:10],
                     end_date = str(stock.tail(1).reset_index()['Date'][0])[0:10],
@@ -74,7 +75,7 @@ def fetch_stock_data(ticker, time_frame):
                     #log_returns = dict(zip(dates, list(log_returns)))
                     )
                 )
-    response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3000' #app.config["FRONTEND_URL"]
+    response.headers['Access-Control-Allow-Origin'] = '*' #'http://localhost:3000' #app.config["FRONTEND_URL"]
     return response
 
 @app.route('/analyze_portfolio/', methods=['GET','POST'])
@@ -124,4 +125,4 @@ def refresh_stock_list():
     return str(output)
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')
