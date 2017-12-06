@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleExpandAll, setTimeFrame } from '../actions/index';
+import { toggleSelectAllStocks, toggleExpandAll, setTimeFrame } from '../actions/index';
 import SmoothCollapse from 'react-smooth-collapse';
 
 class Toolbar extends Component {
@@ -9,6 +9,7 @@ class Toolbar extends Component {
   constructor(props) {
     super(props);
     this.handleTimeFrameChange = this.handleTimeFrameChange.bind(this);
+    this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
   }
 
   renderToolbar() {
@@ -21,7 +22,9 @@ class Toolbar extends Component {
     return (
       <SmoothCollapse expanded={expanded}>
         <div className="toolbar-container">
+
           <span className="toolbar-expand-collapse">
+            <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={this.props.toolbarVariables.selectAllStocks} />&nbsp;&nbsp;
             <a onClick={() => this.props.toggleExpandAll(this.props.toolbarVariables.expandAll, this.props.toolbarVariables.expandArrowClass)}>
               <i className={this.props.toolbarVariables.expandArrowClass}>&nbsp;</i> all
             </a>
@@ -44,6 +47,8 @@ class Toolbar extends Component {
     );
   }
 
+  //handleCheckAllChange(event) { this.props.}
+  handleSelectAllChange(event) { this.props.toggleSelectAllStocks(this.props.toolbarVariables.selectAllStocks); }
   handleTimeFrameChange(event) { this.props.setTimeFrame(event.target.value); }
 
   render() {
@@ -67,7 +72,7 @@ function mapStateToProps({ toolbarVariables, stockList }) {
 function mapDispatchToProps(dispatch) {
   // Whenever toggleExpandAll is called, the result should be passed to
   // all of our reducers
-  return bindActionCreators({ toggleExpandAll, setTimeFrame }, dispatch)
+  return bindActionCreators({ toggleSelectAllStocks, toggleExpandAll, setTimeFrame }, dispatch)
 }
 
 // Promote Toolbar from a component to a container; it needs to know about
@@ -79,9 +84,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 // "select all"
 
-
-
-<input type="checkbox" className="stock-check" defaultChecked />&nbsp;&nbsp;
 
 // "show all"
 

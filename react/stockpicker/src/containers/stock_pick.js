@@ -5,7 +5,7 @@ import SmoothCollapse from 'react-smooth-collapse';
 //import { CSSTransitionGroup } from 'react-transition-group';
 //import dotProp from 'dot-prop-immutable';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
-import { toggleShowStockDetail, replaceStockData, dropStockPick, dropStockData } from '../actions/index';
+import { toggleCheckBox, toggleShowStockDetail, replaceStockData, dropStockPick, dropStockData } from '../actions/index';
 
 function round(value, decimals) {
   return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
@@ -16,8 +16,9 @@ class StockPick extends Component {
       super(props)
       this.handleDeleteClick = this.handleDeleteClick.bind(this);
       this.handleToggleDetailClick = this.handleToggleDetailClick.bind(this);
+      this.handleToggleCheckBox = this.handleToggleCheckBox.bind(this);
   }
-  
+
   // neccessary for componentWillUpdate()
   getInitialProps() {  }
   handleToggleDetailClick() { this.props.toggleShowStockDetail(this.props.value) }
@@ -25,6 +26,7 @@ class StockPick extends Component {
     this.props.dropStockPick(this.props.ticker);
     this.props.dropStockData(this.props.ticker);
   }
+  handleToggleCheckBox() { this.props.toggleCheckBox(this.props.value) }
   componentWillUpdate(nextProps) {
     if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame) {
       if (nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame] === undefined) {
@@ -40,7 +42,9 @@ class StockPick extends Component {
       arrowClass = 'ion-arrow-right-b stock-arrow'
     }
 
+    var hasDetail = false;
     if (this.props.stockData[this.props.ticker] !== undefined) {
+      hasDetail = true;      
       if (this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame] !== undefined) {
         //console.log(this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame])
         //var endDate = this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame].end_date;
@@ -49,13 +53,14 @@ class StockPick extends Component {
         var prices = this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame].prices;
         //var startDate = this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame].start_date;
         var volatility = this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame].volatility;
+
       }
     }
 
     return (
       <div className="stock-pick">
         <div className="stock-pick-header" key={this.props.ticker}>
-          <input type="checkbox" title="Include in analysis?" className="stock-check" defaultChecked />&nbsp;
+          <input type="checkbox" title="Include in analysis?" className="stock-check" onChange={this.handleToggleCheckBox} checked={this.props.settings.isChecked} />&nbsp;
           <span className="stock-pick-click">
             <a onClick={this.handleToggleDetailClick.bind(this)} title={`${this.props.ticker} | ${this.props.name}`}>
               &nbsp;<i className={arrowClass}></i>&nbsp;
@@ -66,47 +71,50 @@ class StockPick extends Component {
           <span className="stock-pick-price" title={`${this.props.ticker} price $${price ? price : '-.--'}`}>$ {price ? price : '-.--'}</span>
         </div>
         <div className="stock-detail">
-          <SmoothCollapse expanded={this.props.settings.showStockDetail}>
-            <div className="stock-detail-container">
-              <div className="small-chart" title={`$${prices ? round(prices[0],2) : 'startprice'}   -   $${prices ? round(prices.slice(-1)[0],2) : 'endprice'}`}>
-                <div className="stock-name-container">
-                  <span className="stock-name">{this.props.name}</span>
+          <SmoothCollapse expanded={hasDetail}>
+            <SmoothCollapse expanded={this.props.settings.showStockDetail}>
+              <div className="stock-detail-container">
+                <div className="small-chart" title={`$${prices ? round(prices[0],2) : 'startprice'}   -   $${prices ? round(prices.slice(-1)[0],2) : 'endprice'}`}>
+                  <div className="stock-name-container">
+                    <span className="stock-name">{this.props.name}</span>
+                  </div>
+                  <Sparklines
+                    data={prices ? prices : [0,]}
+                    style={{
+                      background: "rgba( 54,  2, 78,0.9)",
+                      backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.1))",
+                      borderRadius: "5px"
+                    }}
+                    margin={10}
+                    height={90}>
+                      <SparklinesLine
+                        style={{
+                          stroke: "rgba(193,157, 12,0.9)",
+                          fill: "none"
+                        }} />
+                      <SparklinesReferenceLine
+                        type="avg"
+                        style={{
+                          stroke: 'rgba(193,157, 12,0.8)',
+                          strokeOpacity: .75,
+                          strokeDasharray: '2, 2'
+                        }} />
+                  </Sparklines>
                 </div>
-                <Sparklines
-                  data={prices ? prices : [0,]}
-                  style={{
-                    background: "rgba( 54,  2, 78,0.9)",
-                    backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.1))",
-                    borderRadius: "5px"
-                  }}
-                  margin={10}
-                  height={90}>
-                    <SparklinesLine
-                      style={{
-                        stroke: "rgba(193,157, 12,0.9)",
-                        fill: "none"
-                      }} />
-                    <SparklinesReferenceLine
-                      type="avg"
-                      style={{
-                        stroke: 'rgba(193,157, 12,0.8)',
-                        strokeOpacity: .75,
-                        strokeDasharray: '2, 2'
-                      }} />
-                </Sparklines>
+                <ul className="stock-fine-print">
+                    <li>
+                      logRet: {logReturn ? round(logReturn*100,2) : '-.--'} %&nbsp;&nbsp;
+                    </li>
+                    <li>
+                      vol: {volatility ? round(volatility*100,2) : '-.--'} %&nbsp;&nbsp;
+                    </li>
+                </ul>
               </div>
-              <ul className="stock-fine-print">
-                  <li>
-                    logRet: {logReturn ? round(logReturn*100,2) : '-.--'} %&nbsp;&nbsp;
-                  </li>
-                  <li>
-                    vol: {volatility ? round(volatility*100,2) : '-.--'} %&nbsp;&nbsp;
-                  </li>
-              </ul>
-            </div>
+            </SmoothCollapse>
           </SmoothCollapse>
         </div>
       </div>
+
     );
   }
 };
@@ -122,6 +130,7 @@ function mapStateToProps({ stockData, stockList, toolbarVariables }) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators(
     {
+      toggleCheckBox,
       toggleShowStockDetail,
       replaceStockData,
       dropStockPick,

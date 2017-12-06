@@ -1,5 +1,5 @@
 import { ADD_STOCK_PICK, DROP_STOCK_PICK, REARRANGE_STOCK_LIST } from '../actions/index';
-import { TOGGLE_SHOW_STOCK_DETAIL,TOGGLE_EXPAND_ALL } from '../actions/index';
+import { TOGGLE_SHOW_STOCK_DETAIL,TOGGLE_EXPAND_ALL,TOGGLE_CHECK_BOX,TOGGLE_SELECT_ALL_STOCKS } from '../actions/index';
 //import update from 'immutability-helper';
 import dotProp from 'dot-prop-immutable';
 
@@ -28,6 +28,14 @@ const defaultPortfolio = [
       isChecked: true
     },
   },
+  {
+    ticker: 'EWG',
+    name: 'iShares MSCI Germany Index Fund',
+    settings: {
+      showStockDetail: true,
+      isChecked: true
+    },
+  }  
 ]
 
 function arrayMoveImmutable(array, previousIndex, newIndex) {
@@ -65,6 +73,11 @@ export default function(state, action) {
     return [ action.payload, ...state ];
   case TOGGLE_SHOW_STOCK_DETAIL:
     return dotProp.toggle(state, `${state.indexOf(action.payload)}.settings.showStockDetail`);
+  case TOGGLE_CHECK_BOX:
+    //return state.map(obj => dotProp.toggle(obj, 'settings.isChecked'));
+    return dotProp.toggle(state, `${state.indexOf(action.payload)}.settings.isChecked`);
+  case TOGGLE_SELECT_ALL_STOCKS:
+    return state.map(obj => dotProp.set(obj, 'settings.isChecked', !action.payload));
   case TOGGLE_EXPAND_ALL:
     return state.map(obj => dotProp.set(obj, 'settings.showStockDetail', !action.payload.expandAll));
   case REARRANGE_STOCK_LIST:
@@ -78,13 +91,7 @@ export default function(state, action) {
 
 /*
 
-{
-  ticker: 'EWG',
-  name: 'iShares MSCI Germany Index Fund',
-  settings: {
-    showStockDetail: true,
-    isChecked: true
-  },
+
 */
 
 /*

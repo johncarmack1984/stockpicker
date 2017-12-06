@@ -40,6 +40,14 @@ export function toggleShowStockDetail(value) {
   };
 }
 
+export const TOGGLE_CHECK_BOX = 'TOGGLE_CHECK_BOX';
+export function toggleCheckBox(value) {
+  return {
+    type: TOGGLE_CHECK_BOX,
+    payload: value
+  };
+}
+
 export const REPLACE_STOCK_DATA = 'REPLACE_STOCK_DATA';
 export function replaceStockData(ticker, timeFrame) {
   const url= `${BACKEND_URL}/${ticker}/${timeFrame}/`;
@@ -80,6 +88,14 @@ export function toggleExpandAll(expandAll, expandArrowClass) {
   return {
     type: TOGGLE_EXPAND_ALL,
     payload: { expandAll, expandArrowClass }
+  };
+}
+
+export const TOGGLE_SELECT_ALL_STOCKS = 'TOGGLE_SELECT_ALL_STOCKS';
+export function toggleSelectAllStocks(selectAllStocks) {
+  return {
+    type: TOGGLE_SELECT_ALL_STOCKS,
+    payload: selectAllStocks
   };
 }
 

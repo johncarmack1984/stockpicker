@@ -1,4 +1,4 @@
-import { TOGGLE_EXPAND_ALL, SET_TIME_FRAME } from '../actions/index';
+import { TOGGLE_EXPAND_ALL, SET_TIME_FRAME, TOGGLE_SELECT_ALL_STOCKS } from '../actions/index';
 //import update from 'immutability-helper';
 //import dotProp from 'dot-prop-immutable';
 
@@ -6,7 +6,8 @@ import { TOGGLE_EXPAND_ALL, SET_TIME_FRAME } from '../actions/index';
 const defaultToolbar = {
   expandAll: true,
   expandArrowClass: 'ion-arrow-down-b stock-arrow',
-  timeFrame: '3M'
+  timeFrame: '3M',
+  selectAllStocks: true
 }
 
 export default function(state, action) {
@@ -22,14 +23,15 @@ export default function(state, action) {
       newArrowClass = 'ion-arrow-right-b stock-arrow';
     }
     return {
+      ...state,
       expandAll: !state.expandAll,
-      expandArrowClass: newArrowClass,
-      timeFrame: state.timeFrame
+      expandArrowClass: newArrowClass
     };
+  case TOGGLE_SELECT_ALL_STOCKS:
+    return {...state, selectAllStocks: !state.selectAllStocks};
   case SET_TIME_FRAME:
     return {
-      expandAll: state.expandAll,
-      expandArrowClass: state.expandArrowClass,
+      ...state,
       timeFrame: action.payload
     };
   default:
