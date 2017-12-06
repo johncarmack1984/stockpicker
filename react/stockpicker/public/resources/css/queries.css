@@ -1,56 +1,39 @@
 
 /* Big tablets to 1200px (widths smaller than 1140px row) */
 @media only screen and (max-width: 1200px) {
-    .splash-text-box {
-        width: 100%;
-    }
-    header .span-1-of-2 {
-        width: 48%;
-        align: justify;
-    }
-    /*footer .span-1-of-2 { width: 48%; }*/
+    .splash-text-box { width: 100%; }
     .beta-box { font-size: 80%; }
     .stock-pick:before { display: none; }
 }
 
-
 /* Small to large tablets: 768px to 1023px */
 @media only screen and (max-width: 1023px) {
-    body {
-      font-size: 18px;
-      overflow-y: scroll;
-    }
+    body { font-size: 18px; }
     h1 { font-size: 270%; }
-
-
 }
-
 
 /* Small phones to small tablets: 481-767px */
 @media only screen and (max-width: 767px) {
     body { font-size: 16px; }
-    h1 { font-size: 240%; }
-    h1, h2, h3 { text-shadow: none; }
-
-    .splash-text-box { text-align: center; }
-    section { padding: 0px 0; }
-    .col {
-        width: 100%;
-        margin: 0 0 0 0;
+    h1 { font-size: 265%; }
+    .splash-text-box {
+      text-align: center;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
-    .span-2-of-2 {
-        float: left;
-        text-align: justify;
-    }
-  .App { /*max-height: none;*/ }
-
-    header .span-1-of-2 {
+    .App { display: inline-block; }
+    header {
         width: 100%;
         align-content: center;
     }
-
-    /*.main-nav { display: none; }*/
-
+    .beta-box {
+        margin: 3px;
+        border-radius: 5px;
+        padding: 0;
+        white-space: nowrap;
+        text-overflow: clip;
+    }
+    nav { float: none; }
     .mobile-nav-icon {
         margin: 15px 2% 0px 0px;
         display: block;
@@ -58,10 +41,9 @@
         float: right;
         z-index: 0;
     }
-
     .main-nav {
         z-index: 8888;
-        position:inherit;
+        position:relative;
         width: 100%;
         margin: 0;
         float: right;
@@ -72,8 +54,8 @@
         white-space: nowrap;
         text-align: right;
         border: 0;
-        padding: 11px 16px 12px 0;
-        font-size: 100%;
+        padding: 15px 12px 25px 0;
+        font-size: 110%;
     }
     .main-nav li a:link,
     .main-nav li a:visited {
@@ -90,35 +72,11 @@
     .sticky .mobile-nav-icon { margin-top: 10px; }
     .sticky .mobile-nav-icon i { color: #555; }
     .sticky .mobile-nav-icon i.ion-close-round { color: #fff; }
-
-    /*select { width: 62.5%; }*/
-    .sidebar {
-        /*max-height: 1000vh;*/
-        /*min-height: none;*/
-        /*height: auto;*/
-    }
     .react-autosuggest__suggestions-container {
       min-width: 100vw;
       max-width: 100vw;
     }
-  
-    .sidebar-tools-container {
-      height: 95px;
-    }
-    .stock-picks {
-        /*max-height: calc(1000vh - 40px);*/
-        /*height: auto;*/
-        /*max-height: auto;
-        min-height: auto;*/
-        /*height: auto;*/
-        min-height: none;
-        min-height: 0vh;
-        max-height: none;
-        overflow-y:visible;
-        /*margin-top: 10px;*/
-    }
-
-    .sidebar-toolbar {
+    .toolbar {
         margin: 0px 0px 0 0px;
         font-size: 110%;
         padding: 10px 10px 5px 10px;
@@ -128,70 +86,64 @@
         margin: 0px 0px 0 0px;
         font-size: 110%;
         padding: 10px 10px 5px 10px;
-        float: left;
-        text-align: justify;
+        /*float: left;*/
     }
-    .main-content {
-      /*min-height: none;*/
-      /*min-height: 1vh;*/
+    .stock-pick-click,
+    .stock-symbol {
+      position: relative;
+      z-index: 2;
+      line-height: 100%;
     }
-    footer {
-        /*left: 0;
-        bottom: 0;*/
-        width: 100%;
-        /*overflow:hidden;*/
-        background-color: #333;
-        /*background-attachment: fixed;*/
-        /*padding: 15px 20px;*/
-        font-size: 80%;
-        padding: 0px 20px 0px 20px;
-        margin: 0 auto 0 auto;
-        position:relative;
-        z-index: 10;
-        /*grid-row: 3;*/
+    .stock-name-container {
+      max-width: 94%;
+      overflow: visible;
+      white-space: normal;
+      text-overflow: clip;
+      position: absolute;
+      z-index: 0;
     }
-
-    .beta-box {
-        margin: 3px;
-        border-radius: 5px;
-        padding: 0;
+    .stock-name {
+      overflow: visible;
+      white-space: normal;
+      text-overflow: clip;
+      color: var(--rgba-secondary-2-0);
     }
-
-
+    .footer-nav,
+    .social-links,
+    footer p {
+      float: none;
+      text-align: center;
+      padding: 5px 0 5px 0;
+      margin: 5px auto 0 auto;
+    }
+    footer { font-size: 80%; }
 }
 
 /* Small phones: 0-480px */
 @media only screen and (max-width: 480px) {
     h1 { font-size: 170%; }
+    h1, h2, h3 { text-shadow: none; }
     .beta-box { font-size: 70%; }
-    .popup-form-input {
-        width: 100px;
-    }
-
-    .sidebar-toolbar a,
-    .sidebar-toolbar a:visited {
-      font-size: 110%;
-    }
-
+    .toolbar a,
+    .toolbar a:visited { font-size: 110%; }
+    .toolbar-select-timeframe { margin: 0 0 0 0 ; }
     .stock-pick a,
-    .stock-pick a:visited {
-      font-size: 110%;
+    .stock-pick a:visited { font-size: 110%; }
+    .stock-pick-click {
+      white-space: nowrap;
+      text-overflow: clip;
+      position: relative;
     }
-    .stock-symbol {
-      font-weight: 600;
-    }
-    .stock-name {
-      font-weight: 300;
+    .stock-symbol { font-weight: 600; }
+    .delete-button-span {
+      position: relative;
+      z-index: 1;
     }
     .stock-pick-price {
       font-size: 125%;
       font-weight: 400;
     }
-
-    footer .span-1-of-2 { width: 100%; }
-
 }
-
 
 @media only screen and (max-width: 340px) {
     h1 {
@@ -199,26 +151,10 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-    .splash-text-box: {
-      white-space: nowrap;
-    }
-    beta-box: {
-      font-size: 20%;
-      display:none;
-    }
-
-    .sidebar-toolbar-select-timeframe {
-      margin: 0 0 0 0 ;
-    }
-
-    .footer-nav {
-        padding: 5px 10px;
-        width: 100%;
-        text-align: center;
-    }
-    .social-links {
-        padding: 10px 50px;
-        width: 100%;
+    .beta-box { display:none; }
+    .footer-nav li,
+    .social-links li {
+        padding: 0px 8px;
         text-align: center;
     }
     footer p { font-size: 86%; }

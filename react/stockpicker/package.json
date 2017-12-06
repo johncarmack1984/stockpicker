@@ -7,6 +7,7 @@
     "dot-prop-immutable": "^1.4.0",
     "fullpage-react": "^3.0.14",
     "immutability-helper": "^2.5.1",
+    "immutable": "^3.8.2",
     "ismobilejs": "^0.4.1",
     "lodash": "^4.17.4",
     "react": "^16.2.0",
@@ -25,7 +26,8 @@
     "redux": "^3.7.2",
     "redux-promise": "^0.5.3",
     "require-from-url": "^3.1.2",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "timm": "^1.4.0"
   },
   "scripts": {
     "start": "react-scripts start",

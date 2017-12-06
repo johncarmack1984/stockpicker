@@ -1,39 +1,23 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addNewStockPick } from '../actions/index';
+import { addNewStockPick, fetchStockData } from '../actions/index';
 
 
 import Autosuggest from 'react-autosuggest';
 
 // import json for autocomplete
 const tickerNamePairs = require('../resources/ticker_name_pairs.json');
-
-function escapeRegexCharacters(str) {
-  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
+// auto-suggest stuff
+function escapeRegexCharacters(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
 function getSuggestions(value) {
   const escapedValue = escapeRegexCharacters(value.trim());
-
-  if (escapedValue === '') {
-    return [];
-  }
-
+  if (escapedValue === '') { return []; }
   const regex = new RegExp('\\b' + escapedValue, 'i');
   return (tickerNamePairs.filter(tickerNamePair => regex.test(tickerNamePair.string)));
-
 }
-
-function getSuggestionValue(suggestion) {
-  return suggestion.string;
-}
-
-function renderSuggestion(suggestion) {
-  return (
-    <span>{suggestion.string}</span>
-  );
-}
+function getSuggestionValue(suggestion) { return suggestion.string; }
+function renderSuggestion(suggestion) { return (<span>{suggestion.string}</span>); }
 
 class SearchBar extends Component {
   constructor(props) {
@@ -45,31 +29,16 @@ class SearchBar extends Component {
     this.handleClearClick = this.handleClearClick.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
-  handleClearClick() {
-    this.setState({
-      value: '',
-    });
-  }
-  onChange = (event, { newValue, method }) => {
-    this.setState({
-      value: newValue
-    });
-  };
-  onSuggestionsFetchRequested = ({ value }) => {
-    this.setState({
-      suggestions: getSuggestions(value)
-    });
-  };
-  onSuggestionsClearRequested = () => {
-    this.setState({
-      suggestions: []
-    });
-  };
+  onChange = (event, { newValue, method }) => { this.setState({ value: newValue }); };
+  handleClearClick() { this.setState({ value: '', }); }
+  onSuggestionsFetchRequested = ({ value }) => { this.setState({ suggestions: getSuggestions(value) });  };
+  onSuggestionsClearRequested = () => { this.setState({ suggestions: []  }); };
   onFormSubmit(event) {
     event.preventDefault();
-    //this.props.fetchStockData(this.state.value.split(" | ")[0], this.props.toolbarVariables.timeFrame);
-    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);
+    this.props.fetchStockData(this.state.value.split(' | ')[0], this.props.toolbarVariables.timeFrame)
     this.setState({ value: '' });
+    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);    
+
   };
   render() {
     const { value, suggestions } = this.state;
@@ -83,9 +52,9 @@ class SearchBar extends Component {
       clearButton = (<i className="close-icon ion-close-circled" onClick={this.handleClearClick}></i>);
     }
     return (
-      <div className="row sidebar-search">
-        <form onSubmit={this.onFormSubmit}>
-          <span className="sidebar-search-field">
+      <div className="search">
+        <form onSubmit={this.onFormSubmit} action="" method="">
+          <span className="search-field">
             <Autosuggest
               suggestions={suggestions}
               onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
@@ -94,8 +63,7 @@ class SearchBar extends Component {
               renderSuggestion={renderSuggestion}
               inputProps={inputProps}
               highlightFirstSuggestion={true}
-              alwaysRenderSuggestions={false}
-            />
+              alwaysRenderSuggestions={false}/>
             <span className="close-icon-container">
               {clearButton}
             </span>
@@ -110,18 +78,9 @@ class SearchBar extends Component {
 function mapStateToProps({ toolbarVariables }) {
   // Whatever is returned from here will show up as props
   // inside of toolbar
-  return {
-    toolbarVariables,
-  };
+  return { toolbarVariables, };
 }
 
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      addNewStockPick
-    },
-    dispatch
-  );
-}
+function mapDispatchToProps(dispatch) { return bindActionCreators({ addNewStockPick, fetchStockData }, dispatch); }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

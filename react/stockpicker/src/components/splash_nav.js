@@ -8,10 +8,8 @@ class SplashNav extends Component {
     this.state = {
       navHidden: true,
       navIconClass: 'ion-navicon',
-      width: 0,
     }
   }
-
   // responsive nav menu
   handleResize() {
     if (window.innerWidth >= 767) {
@@ -41,33 +39,25 @@ class SplashNav extends Component {
     const Nav = (props) => (
       <div className="nav-box">
         <ul className="main-nav">
-          <li><a className="popup-with-form">about&nbsp;<i className="ion-information-circled"></i></a></li>
-
-          <li><a className="popup-with-form">legal&nbsp;<i className="ion-document-text"></i></a></li>
-
+          <li><a>about&nbsp;<i className="ion-information-circled">&nbsp;</i></a></li>
+          <li><a>legal&nbsp;<i className="ion-document-text">&nbsp;</i></a></li>
         </ul>
-
       </div>
-
     )
     return (
-
-      <header className="splash row">
-        <nav>
-          <div className="row splash-text-box">
-            <div className="col span-1-of-2">
+      <header>
+          <span className="splash-text-container">
               <a className="mobile-nav-icon" onClick={this.toggleNav.bind(this)}><i className={this.state.navIconClass}></i></a>
-              <h1 className="splash-text">stockpicker.io</h1><span className="beta-box">BETA</span>
-            </div>
-            <div className="col span-1-of-2">
+              <h1 className="splash-text">stockpicker.io</h1>
+              <span className="beta-box">BETA</span>
+            </span>
+            <nav>
               <SmoothCollapse
-                expanded={!this.state.navHidden}>
+                expanded={!this.state.navHidden}
+                heightTransition=".15s ease">
                 <Nav />
               </SmoothCollapse>
-            </div>
-
-          </div>
-        </nav>
+            </nav>
       </header>
     );
   }

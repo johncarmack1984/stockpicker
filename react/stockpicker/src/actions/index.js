@@ -3,6 +3,7 @@ import axios from 'axios';
 //const BACKEND_URL = 'http://127.0.0.1:5000';
 const BACKEND_URL = 'http://192.168.0.2:5000';
 //const BACKEND_URL = 'https://u4xxjfnsze.execute-api.us-east-1.amazonaws.com/dev';
+//const BACKEND_URL = 'https://api.stockpicker.io/v1';
 
 export const ADD_STOCK_PICK = 'ADD_STOCK_PICK';
 export function addNewStockPick(searchValue, expandAllValue) {
@@ -13,7 +14,7 @@ export function addNewStockPick(searchValue, expandAllValue) {
     settings: {
       showStockDetail: expandAllValue,
       isChecked: true
-    }
+    },
   }
   return {
     type: ADD_STOCK_PICK,
@@ -30,6 +31,15 @@ export function fetchStockData(ticker, timeFrame) {
     payload: request
   };
 }
+
+export const TOGGLE_SHOW_STOCK_DETAIL = 'TOGGLE_SHOW_STOCK_DETAIL';
+export function toggleShowStockDetail(value) {
+  return {
+    type: TOGGLE_SHOW_STOCK_DETAIL ,
+    payload: value
+  };
+}
+
 export const REPLACE_STOCK_DATA = 'REPLACE_STOCK_DATA';
 export function replaceStockData(ticker, timeFrame) {
   const url= `${BACKEND_URL}/${ticker}/${timeFrame}/`;
@@ -40,7 +50,6 @@ export function replaceStockData(ticker, timeFrame) {
   }
 }
 
-/*
 export const REARRANGE_STOCK_LIST = 'REARRANGE_STOCK_LIST';
 export function rearrangeStockList(oldIndex, newIndex) {
   return {
@@ -48,7 +57,7 @@ export function rearrangeStockList(oldIndex, newIndex) {
     payload: { oldIndex, newIndex }
   };
 }
-*/
+
 
 export const DROP_STOCK_DATA = 'DROP_STOCK_DATA';
 export function dropStockData(ticker) {
@@ -81,23 +90,3 @@ export function setTimeFrame(timeFrame) {
     payload: timeFrame
   };
 }
-
-
-//const BACKEND_URL = 'https://dg6hbo4hka.execute-api.us-east-1.amazonaws.com/dev';
-//const BACKEND_URL = 'https://api.stockpicker.io/v1';
-
-/*
-import fetchStockData, { FETCH_STOCK_DATA } from './actions_stockdata';
-import replaceStockData, { REPLACE_STOCK_DATA } from './actions_stockdata';
-import dropStockData, { DROP_STOCK_DATA } from './actions_stockdata';
-
-import toggleExpandAll, { TOGGLE_EXPAND_ALL } from './actions_toolbar';
-import setTimeFrame, { SET_TIME_FRAME } from './actions_toolbar';
-
-export { fetchStockData, FETCH_STOCK_DATA };
-export { replaceStockData, REPLACE_STOCK_DATA };
-export { dropStockData, DROP_STOCK_DATA };
-
-export { toggleExpandAll, TOGGLE_EXPAND_ALL };
-export { setTimeFrame, SET_TIME_FRAME };
-*/

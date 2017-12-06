@@ -8,6 +8,7 @@ import update from 'immutability-helper';
 export default function(state = {}, action) {
   switch (action.type) {
   case FETCH_STOCK_DATA:
+    //console.log(action);
     return update(state, {$merge: {[action.payload.data.ticker]: {[action.payload.data.time_frame]: action.payload.data}}});
   case REPLACE_STOCK_DATA:
     return update(state, {[action.payload.data.ticker]: {$merge: {[action.payload.data.time_frame]: action.payload.data}}});
@@ -18,9 +19,3 @@ export default function(state = {}, action) {
     return state;
   }
 }
-
-
-
-/*, REARRANGE_STOCK_LIST*/
-/*case REARRANGE_STOCK_LIST:
-  return arrayMove(state, action.payload.oldIndex, action.payload.newIndex);*/

@@ -2,28 +2,28 @@ import React from 'react';
 
 const Footer = (props) => {
   return (
-    <footer className="row">
-      <span className="col span-1-of-2">
-        <ul className="footer-nav">
-            <li><a className="popup-with-form" href="#about">About us</a></li>
-            <li><a className="popup-with-form" href="#legal">Legal</a></li>
-            <li><a href="">Blog</a></li>
-            <li><a href="">Press</a></li>
-        </ul>
-      </span>
-      <span className="col span-1-of-2">
-        <ul className="social-links">
-          <li><a href=""><i className="ion-social-facebook"></i></a></li>
-          <li><a href=""><i className="ion-social-twitter"></i></a></li>
-          <li><a href=""><i className="ion-social-googleplus"></i></a></li>
-          <li><a href=""><i className="ion-social-instagram"></i></a></li>
-        </ul>
-      </span>
-      <p>
-        Copyright &copy; 2017 by Stockpicker.io. All rights reserved.
-      </p>
+    <footer>
+      <ul className="footer-nav">
+          <li><a href="">About us</a></li>
+          <li><a href="">Legal</a></li>
+          <li><a href="">Blog</a></li>
+          <li><a href="">Press</a></li>
+      </ul>
+      <ul className="social-links">
+        <li><a href=""><i className="ion-social-facebook"></i></a></li>
+        <li><a href=""><i className="ion-social-twitter"></i></a></li>
+        <li><a href=""><i className="ion-social-googleplus"></i></a></li>
+        <li><a href=""><i className="ion-social-instagram"></i></a></li>
+      </ul>
+      <p>Copyright &copy; 2017 by Stockpicker.io<br />
+      All rights reserved</p>
     </footer>
   );
 };
 
 export default Footer;
+
+/*
+
+
+ */

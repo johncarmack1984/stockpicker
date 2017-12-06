@@ -1,0 +1,38 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.App {
+    border: none;
+    display: grid;
+    grid-template-columns: repeat(100, 1fr);
+    grid-template-rows: 1fr 40px 45px 10fr 1fr;
+    grid-gap: 0px;
+    width: 100vw;
+    height: 100vh;
+}
+header {
+    grid-column: 1 / 102;
+    grid-row: 1 / 2;
+}
+.search {
+    grid-column: 1 / 37;
+    grid-row: 2 / 3;
+}
+.toolbar {
+    grid-column: 1 / 37;
+    grid-row: 3 / 4;
+}
+.stock-picks {
+    grid-column: 1 / 37;
+    grid-row: 4 / 14;
+}
+.main-content {
+    grid-column: 37 / 102;
+    grid-row: 2 / 14;
+}
+footer {
+    grid-column: 1 / 102;
+    grid-row: 14 / 15;
+}
