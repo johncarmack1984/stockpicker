@@ -48,7 +48,7 @@ class PortfolioDrawer extends Component {
 
   componentWillUpdate(nextProps) {
   }
-  onSortEnd = ({oldIndex, newIndex}) => { this.props.rearrangeStockList(oldIndex, newIndex); }
+  onSortEnd = ({ oldIndex, newIndex }) => { this.props.rearrangeStockList(oldIndex, newIndex) }
   render() {
     return (
         <SortablePortfolioList
@@ -63,10 +63,9 @@ class PortfolioDrawer extends Component {
   }
 }
 
-function mapStateToProps({ stockList, stockData, toolbarVariables }) {
+function mapStateToProps({ stockList, toolbarVariables }) {
   return {
     stockList,
-    stockData,
     toolbarVariables
   };
 }

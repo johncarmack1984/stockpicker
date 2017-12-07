@@ -11,49 +11,52 @@ class Toolbar extends Component {
     this.handleTimeFrameChange = this.handleTimeFrameChange.bind(this);
     this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
   }
+  handleSelectAllChange(event) {
+    this.props.toggleSelectAllStocks(this.props.toolbarVariables.selectAllStocks);
+  }
+  handleTimeFrameChange(event) {
+    this.props.setTimeFrame(event.target.value);
+  }
 
-  renderToolbar() {
+  render() {
     let expanded;
     if (this.props.stockList.length > 0) {
       expanded = true;
     } else {
       expanded = true;
     }
+    let arrowClass;
+    if (this.props.toolbarVariables.expandAll === true) {
+      arrowClass = 'ion-arrow-down-b stock-arrow'
+    } else {
+      arrowClass = 'ion-arrow-right-b stock-arrow'
+    }
     return (
-      <SmoothCollapse expanded={expanded}>
-        <div className="toolbar-container">
-
-          <span className="toolbar-expand-collapse">
-            <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={this.props.toolbarVariables.selectAllStocks} />&nbsp;&nbsp;
-            <a onClick={() => this.props.toggleExpandAll(this.props.toolbarVariables.expandAll, this.props.toolbarVariables.expandArrowClass)}>
-              <i className={this.props.toolbarVariables.expandArrowClass}>&nbsp;</i> all
-            </a>
-          </span>
-          <span className="toolbar-select-timeframe">
-            &nbsp;timeFrame:&nbsp;
-              <select
-                name="timeFrame"
-                defaultValue={this.props.toolbarVariables.timeFrame}
-                onChange={this.handleTimeFrameChange}>
-                <option value="1W">1W</option>
-                <option value="1M">1M</option>
-                <option value="3M">3M</option>
-                <option value="1Y">1Y</option>
-                <option value="5Y">5Y</option>
-              </select>
-          </span>
-        </div>
-      </SmoothCollapse>
-    );
-  }
-
-  //handleCheckAllChange(event) { this.props.}
-  handleSelectAllChange(event) { this.props.toggleSelectAllStocks(this.props.toolbarVariables.selectAllStocks); }
-  handleTimeFrameChange(event) { this.props.setTimeFrame(event.target.value); }
-
-  render() {
-    return (
-      <div className="toolbar">{this.renderToolbar()}</div>
+      <div className="toolbar">
+        <SmoothCollapse expanded={expanded}>
+          <div className="toolbar-container">
+            <span className="toolbar-expand-collapse">
+              <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={this.props.toolbarVariables.selectAllStocks} />&nbsp;&nbsp;
+              <a onClick={() => this.props.toggleExpandAll(this.props.toolbarVariables.expandAll)}>
+                <i className={arrowClass}>&nbsp;</i> all
+              </a>
+            </span>
+            <span className="toolbar-select-timeframe">
+              &nbsp;timeFrame:&nbsp;
+                <select
+                  name="timeFrame"
+                  defaultValue={this.props.toolbarVariables.timeFrame}
+                  onChange={this.handleTimeFrameChange}>
+                  <option value="1W">1W</option>
+                  <option value="1M">1M</option>
+                  <option value="3M">3M</option>
+                  <option value="1Y">1Y</option>
+                  <option value="5Y">5Y</option>
+                </select>
+            </span>
+          </div>
+        </SmoothCollapse>
+      </div>
     );
   }
 }

@@ -2,22 +2,32 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addNewStockPick, fetchStockData } from '../actions/index';
-
-
 import Autosuggest from 'react-autosuggest';
 
 // import json for autocomplete
 const tickerNamePairs = require('../resources/ticker_name_pairs.json');
-// auto-suggest stuff
-function escapeRegexCharacters(str) { return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+// autosuggest code
+function escapeRegexCharacters(str) {
+  return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
 function getSuggestions(value) {
   const escapedValue = escapeRegexCharacters(value.trim());
-  if (escapedValue === '') { return []; }
+  if (escapedValue === '') {
+    return [];
+  }
   const regex = new RegExp('\\b' + escapedValue, 'i');
-  return (tickerNamePairs.filter(tickerNamePair => regex.test(tickerNamePair.string)));
+  return (
+    tickerNamePairs.filter(tickerNamePair => regex.test(tickerNamePair.string))
+  );
 }
-function getSuggestionValue(suggestion) { return suggestion.string; }
-function renderSuggestion(suggestion) { return (<span>{suggestion.string}</span>); }
+function getSuggestionValue(suggestion) {
+  return suggestion.string;
+}
+function renderSuggestion(suggestion) {
+  return (
+    <span>{suggestion.string}</span>
+  );
+}
 
 class SearchBar extends Component {
   constructor(props) {
@@ -29,16 +39,23 @@ class SearchBar extends Component {
     this.handleClearClick = this.handleClearClick.bind(this);
     this.onFormSubmit = this.onFormSubmit.bind(this);
   }
-  onChange = (event, { newValue, method }) => { this.setState({ value: newValue }); };
-  handleClearClick() { this.setState({ value: '', }); }
-  onSuggestionsFetchRequested = ({ value }) => { this.setState({ suggestions: getSuggestions(value) });  };
-  onSuggestionsClearRequested = () => { this.setState({ suggestions: []  }); };
+  onChange = (event, { newValue, method }) => {
+    this.setState({ value: newValue });
+  };
+  handleClearClick() {
+    this.setState({ value: '', });
+  }
+  onSuggestionsFetchRequested = ({ value }) => {
+    this.setState({ suggestions: getSuggestions(value) });
+  };
+  onSuggestionsClearRequested = () => {
+    this.setState({ suggestions: []  });
+  };
   onFormSubmit(event) {
     event.preventDefault();
     this.props.fetchStockData(this.state.value.split(' | ')[0], this.props.toolbarVariables.timeFrame)
     this.setState({ value: '' });
-    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);    
-
+    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);
   };
   render() {
     const { value, suggestions } = this.state;

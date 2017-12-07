@@ -8,7 +8,7 @@ import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-spark
 import { toggleCheckBox, toggleShowStockDetail, replaceStockData, dropStockPick, dropStockData } from '../actions/index';
 
 function round(value, decimals) {
-  return Number(Math.round(value+'e'+decimals)+'e-'+decimals);
+  return (Number(Math.round(value+'e'+decimals)+'e-'+decimals));
 }
 
 class StockPick extends Component {
@@ -21,12 +21,16 @@ class StockPick extends Component {
 
   // neccessary for componentWillUpdate()
   getInitialProps() {  }
-  handleToggleDetailClick() { this.props.toggleShowStockDetail(this.props.value) }
+  handleToggleCheckBox() {
+    this.props.toggleCheckBox(this.props.value)
+  }
+  handleToggleDetailClick() {
+    this.props.toggleShowStockDetail(this.props.value)
+  }
   handleDeleteClick() {
     this.props.dropStockPick(this.props.ticker);
     this.props.dropStockData(this.props.ticker);
   }
-  handleToggleCheckBox() { this.props.toggleCheckBox(this.props.value) }
   componentWillUpdate(nextProps) {
     if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame) {
       if (nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame] === undefined) {
@@ -44,7 +48,7 @@ class StockPick extends Component {
 
     var hasDetail = false;
     if (this.props.stockData[this.props.ticker] !== undefined) {
-      hasDetail = true;      
+      hasDetail = true;
       if (this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame] !== undefined) {
         //console.log(this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame])
         //var endDate = this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame].end_date;
@@ -80,34 +84,18 @@ class StockPick extends Component {
                   </div>
                   <Sparklines
                     data={prices ? prices : [0,]}
-                    style={{
-                      background: "rgba( 54,  2, 78,0.9)",
-                      backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.1))",
-                      borderRadius: "5px"
-                    }}
+                    style={{ background: "rgba( 54,  2, 78,0.9)", backgroundImage: "linear-gradient(rgba(0, 0, 0, 0.01), rgba(0, 0, 0, 0.1))", borderRadius: "5px" }}
                     margin={10}
                     height={90}>
-                      <SparklinesLine
-                        style={{
-                          stroke: "rgba(193,157, 12,0.9)",
-                          fill: "none"
-                        }} />
+                      <SparklinesLine style={{ stroke: "rgba(193,157, 12,0.9)", fill: "none" }} />
                       <SparklinesReferenceLine
                         type="avg"
-                        style={{
-                          stroke: 'rgba(193,157, 12,0.8)',
-                          strokeOpacity: .75,
-                          strokeDasharray: '2, 2'
-                        }} />
+                        style={{ stroke: 'rgba(193,157, 12,0.8)', strokeOpacity: .75, strokeDasharray: '2, 2' }} />
                   </Sparklines>
                 </div>
                 <ul className="stock-fine-print">
-                    <li>
-                      logRet: {logReturn ? round(logReturn*100,2) : '-.--'} %&nbsp;&nbsp;
-                    </li>
-                    <li>
-                      vol: {volatility ? round(volatility*100,2) : '-.--'} %&nbsp;&nbsp;
-                    </li>
+                    <li>logRet: {logReturn ? round(logReturn*100,2) : '-.--'} %&nbsp;&nbsp;</li>
+                    <li>vol: {volatility ? round(volatility*100,2) : '-.--'} %&nbsp;&nbsp;</li>
                 </ul>
               </div>
             </SmoothCollapse>
@@ -143,51 +131,8 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(StockPick);
 
 /*
-
-x => x + '<br />'
-
 <div >
     <a className="js--ideal-weight"><span className="ideal-weight js--ideal-weight">18&#37;</span></a>
       <span className="num-shares">1</span>
 </div>
 */
-
-
-/*
-/*
-if (nextProps.ticker !== this.props.ticker) {
-  console.log('ticker of component changed!')
-  this.setState({
-    endDate: nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].end_date,
-    prices: nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].prices,
-    logReturn: round(nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].log_return*100,2),
-    price: round(nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].price,2),
-    startDate: nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].start_date,
-    volatility: round(nextProps.stockData[this.props.ticker][nextProps.toolbarVariables.timeFrame].volatility*100,2)
-  });
-}
-//
-if (this.props.stockData[this.props.ticker]) {
-  //console.log(`${this.props.ticker}/${this.props.toolbarVariables.timeFrame} has data`)
-}
-// handle data loadingg
-// if incoming data is different from current data && the next data is 'undefined'
-// reset variables to avoid an error
-if (nextProps.stockData[this.props.ticker] !== this.props.stockData[this.props.ticker] && nextProps.stockData[this.props.ticker] === undefined) {
-  this.setState({
-    /*endDate: MM-DD-YYYY, prices: [0,], logReturn: '–.--', price: '-.--', /*startDate: MM-DD-YYYY, volatility: '-.--'
-  });
-// if incoming data is different from current data && next data is defined, point state to new data
-} else if (nextProps.stockData[this.props.ticker] !== this.props.stockData[this.props.ticker] && nextProps.stockData[this.props.ticker] !== undefined) {
-  this.setState({
-    endDate: nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].end_date,
-    prices: nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].prices,
-    logReturn: round(nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].log_return*100,2),
-    price: round(nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].price,2),
-    startDate: nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].start_date,
-    volatility: round(nextProps.stockData[nextProps.ticker][nextProps.toolbarVariables.timeFrame].volatility*100,2)
-  });
-}
-*/
-// handle expand/collapse all
-//

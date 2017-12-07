@@ -3,7 +3,6 @@ import { REPLACE_STOCK_DATA } from '../actions/index';
 import { DROP_STOCK_DATA } from '../actions/index';
 //import dotProp from 'dot-prop-immutable';
 import update from 'immutability-helper';
-//import { arrayMove } from 'react-sortable-hoc';
 
 export default function(state = {}, action) {
   switch (action.type) {

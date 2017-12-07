@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-//const BACKEND_URL = 'http://127.0.0.1:5000';
 const BACKEND_URL = 'http://192.168.0.2:5000';
 //const BACKEND_URL = 'https://u4xxjfnsze.execute-api.us-east-1.amazonaws.com/dev';
 //const BACKEND_URL = 'https://api.stockpicker.io/v1';
@@ -84,10 +83,10 @@ export function dropStockPick(ticker) {
 }
 
 export const TOGGLE_EXPAND_ALL = 'TOGGLE_EXPAND_ALL';
-export function toggleExpandAll(expandAll, expandArrowClass) {
+export function toggleExpandAll(expandAll) {
   return {
     type: TOGGLE_EXPAND_ALL,
-    payload: { expandAll, expandArrowClass }
+    payload: expandAll 
   };
 }
 
