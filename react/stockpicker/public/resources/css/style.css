@@ -373,6 +373,9 @@ nav {
   min-height: 40px;
   background-color: #f4f4f4;
   background-image: linear-gradient(rgba(0, 0, 0, 0.0), rgba(0, 0, 0, 0.04));
+  white-space: normal;
+  overflow: visible;
+  text-overflow:inherit;
 }
 .toolbar:before,
 .toolbar:after {
@@ -411,14 +414,11 @@ nav {
   color: rgba(85, 85, 85,1);
   font-weight: 500;
 }
-.toolbar-select-timeframe {
-  display: inline-block;
+.toolbar-select-timeframe-sort-by {
+  float: right;
+  margin: -2px 16% 0 0;  
   color: rgba(85, 85, 85,1);
   font-weight: 300;
-  float: right;
-  margin: 0 16% 0 0 ;
-  color: rgba(85, 85, 85,1);
-  text-align: right;
 }
 .toolbar select {
   font-size: 97%;

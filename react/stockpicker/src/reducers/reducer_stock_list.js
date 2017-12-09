@@ -2,6 +2,7 @@ import { ADD_STOCK_PICK, DROP_STOCK_PICK } from '../actions/index';
 import { FETCH_STOCK_DATA, REARRANGE_STOCK_LIST } from '../actions/index';
 import { TOGGLE_SHOW_STOCK_DETAIL, TOGGLE_EXPAND_ALL } from '../actions/index';
 import { TOGGLE_CHECK_BOX, TOGGLE_SELECT_ALL_STOCKS } from '../actions/index';
+//import { HANDLE_SORT_BY_CHANGE, TOGGLE_SORT_DESC } from '../actions/index';
 import dotProp from 'dot-prop-immutable';
 import update from 'immutability-helper';
 
@@ -101,3 +102,15 @@ export default function(state, action) {
     return state;
   }
 }
+
+/*
+
+case TOGGLE_SORT_DESC:
+  return state;
+case HANDLE_SORT_BY_CHANGE:
+  //console.log(state.sort())
+  //console.log(state.sort((a,b) => a.data[action.payload.timeFrame].log_return - b.data[action.payload.timeFrame].log_return).reverse())
+  //console.log(action.payload)
+  return state;
+
+ */

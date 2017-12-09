@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { toggleSelectAllStocks, toggleExpandAll, setTimeFrame } from '../actions/index';
+import { toggleSelectAllStocks, toggleExpandAll } from '../actions/index';
+import { setTimeFrame, toggleSortDesc } from '../actions/index';
+import { handleSortByChange } from '../actions/index';
 import SmoothCollapse from 'react-smooth-collapse';
 
 class Toolbar extends Component {
@@ -10,6 +12,8 @@ class Toolbar extends Component {
     super(props);
     this.handleTimeFrameChange = this.handleTimeFrameChange.bind(this);
     this.handleSelectAllChange = this.handleSelectAllChange.bind(this);
+    this.toggleSortDesc = this.toggleSortDesc.bind(this);
+    this.handleSortByChange = this.handleSortByChange.bind(this);
   }
   handleSelectAllChange(event) {
     this.props.toggleSelectAllStocks(this.props.toolbarVariables.selectAllStocks);
@@ -17,7 +21,12 @@ class Toolbar extends Component {
   handleTimeFrameChange(event) {
     this.props.setTimeFrame(event.target.value);
   }
-
+  handleSortByChange(event) {
+    this.props.handleSortByChange(event.target.value, this.props.toolbarVariables.sortDesc, this.props.toolbarVariables.timeFrame);
+  }
+  toggleSortDesc(event) {
+    this.props.toggleSortDesc(this.props.toolbarVariables.sortDesc);
+  }
   render() {
 
     let expanded;
@@ -26,12 +35,14 @@ class Toolbar extends Component {
     } else {
       expanded = true;
     }
-    let arrowClass;
+
+    let expandArrowClass;
     if (this.props.toolbarVariables.expandAll === true) {
-      arrowClass = 'ion-arrow-down-b stock-arrow'
+      expandArrowClass = 'ion-arrow-down-b stock-arrow'
     } else {
-      arrowClass = 'ion-arrow-right-b stock-arrow'
+      expandArrowClass = 'ion-arrow-right-b stock-arrow'
     }
+
     return (
       <div className="toolbar">
         <SmoothCollapse expanded={expanded}>
@@ -39,11 +50,11 @@ class Toolbar extends Component {
             <span className="toolbar-expand-collapse">
               <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={this.props.toolbarVariables.selectAllStocks} />&nbsp;&nbsp;
               <a onClick={() => this.props.toggleExpandAll(this.props.toolbarVariables.expandAll)}>
-                <i className={arrowClass}>&nbsp;</i> all
+                <i className={expandArrowClass}>&nbsp;</i> all
               </a>
             </span>
-            <span className="toolbar-select-timeframe">
-              &nbsp;timeFrame:&nbsp;
+            <span className="toolbar-select-timeframe-sort-by">
+              timeFrame&nbsp;
                 <select
                   name="timeFrame"
                   defaultValue={this.props.toolbarVariables.timeFrame}
@@ -76,7 +87,13 @@ function mapStateToProps({ toolbarVariables, stockList }) {
 function mapDispatchToProps(dispatch) {
   // Whenever toggleExpandAll is called, the result should be passed to
   // all of our reducers
-  return bindActionCreators({ toggleSelectAllStocks, toggleExpandAll, setTimeFrame }, dispatch)
+  return bindActionCreators({
+    toggleSelectAllStocks,
+    toggleExpandAll,
+    setTimeFrame,
+    toggleSortDesc,
+    handleSortByChange
+  }, dispatch)
 }
 
 // Promote Toolbar from a component to a container; it needs to know about
@@ -107,35 +124,28 @@ return (
 
 /
 // "sorted by"
-sortDesc: true,
-sortString: 'desc',
-sortArrowClass: 'ion-arrow-down-b stock-arrow'
 
-toggleSortDesc() {
-  this.setState({ sortDesc: !this.state.sortDesc })
-  if (this.state.sortArrowClass === 'ion-arrow-up-b stock-arrow'){
-    this.setState({
-      sortString: 'desc',
-      sortArrowClass: 'ion-arrow-down-b stock-arrow'
-    });
-  } else {
-    this.setState({
-      sortString: 'asc',
-      sortArrowClass: 'ion-arrow-up-b stock-arrow'
-    });
-  }
+let sortArrowClass;
+if (this.props.toolbarVariables.sortDesc === true) {
+  sortArrowClass = 'ion-arrow-down-b stock-arrow';
+} else {
+  sortArrowClass = 'ion-arrow-up-b stock-arrow';
 }
-<span className="sidebar-toolbar-sort-by">
-  &nbsp;sorted by&nbsp;
-    <select defaultValue="placeholder">
-      <option value="placeholder">------</option>
-      <option value="ticker">ticker</option>
-      <option value="name">name</option>
-      <option value="price">price</option>
-      <option value="logRet">logRet</option>
-      <option value="vol">vol</option>
-      <option value="ratio">ratio</option>
-    </select>
-    <a onClick={this.toggleSortDesc.bind(this)}>&nbsp;{this.state.sortString}&nbsp;&nbsp;<i className={this.state.sortArrowClass}>&nbsp;</i></a>
-</span>
+
+sort&nbsp;
+  <select
+    name="sortBy"
+    defaultValue={this.props.toolbarVariables.sortBy}
+    onChange={this.handleSortByChange}>
+    <option value={undefined}>-------</option>
+    <option value="ticker">ticker</option>
+    <option value="name">name</option>
+    <option value="price">price</option>
+    <option value="logRet">logRet</option>
+    <option value="vol">vol</option>
+    <option value="ratio">ratio</option>
+  </select>
+  <a onClick={this.toggleSortDesc.bind(this)}>&nbsp;<i className={sortArrowClass}>&nbsp;</i></a>
+
+
  */

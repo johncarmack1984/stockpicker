@@ -96,3 +96,19 @@ export function setTimeFrame(timeFrame) {
     payload: timeFrame
   };
 }
+
+export const HANDLE_SORT_BY_CHANGE = 'HANDLE_SORT_BY_CHANGE';
+export function handleSortByChange(sortBy, sortDesc, timeFrame) {
+  return {
+    type: HANDLE_SORT_BY_CHANGE,
+    payload: { sortBy, sortDesc, timeFrame }
+  }
+}
+
+export const TOGGLE_SORT_DESC = 'TOGGLE_SORT_DESC';
+export function toggleSortDesc(sortDesc) {
+  return {
+    type: TOGGLE_SORT_DESC,
+    payload: sortDesc
+  }
+}

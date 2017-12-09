@@ -19,12 +19,10 @@ const SortableStockPick = SortableElement(({value}) =>
     </li>
 );
 
-const SortablePortfolioList = SortableContainer(({items}) => {
+const StockList = SortableContainer(({items}) => {
   return (
     <ul className="stock-picks">
         {items
-          //.sort((a, b) => a.age-b.age)
-          //.sort()
           .map((value, index) => (
           <SortableStockPick
             key={`item-${index}`}
@@ -34,7 +32,8 @@ const SortablePortfolioList = SortableContainer(({items}) => {
             lockAxis={'y'}
             helperClass="stock-pick"
             transitionDuration={100}/>
-        ))}
+          ))
+        }
     </ul>
   );
 });
@@ -59,10 +58,10 @@ class PortfolioDrawer extends Component {
   onSortEnd = ({ oldIndex, newIndex }) => { this.props.rearrangeStockList(oldIndex, newIndex) }
   render() {
     return (
-        <SortablePortfolioList
+        <StockList
           items={this.props.stockList}
           onSortEnd={this.onSortEnd}
-          pressDelay={175}
+          pressDelay={160}
           useWindowAsScrollContainer={true}
           axis={'y'}
           lockAxis={'y'}
