@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { Map } from 'immutable';
 
 const BACKEND_URL = 'http://192.168.0.2:5000';
 //const BACKEND_URL = 'https://u4xxjfnsze.execute-api.us-east-1.amazonaws.com/dev';
@@ -6,6 +7,7 @@ const BACKEND_URL = 'http://192.168.0.2:5000';
 
 // stockList actions
 
+/*
 export const ADD_STOCK_PICK = 'ADD_STOCK_PICK';
 export function addNewStockPick(searchValue, expandAllValue, selectAllStocksValue) {
   var searchValueSplit = searchValue.split(' | ', 2);
@@ -19,6 +21,25 @@ export function addNewStockPick(searchValue, expandAllValue, selectAllStocksValu
     data: {
     }
   }
+  return {
+    type: ADD_STOCK_PICK,
+    payload: stockContainer
+  }
+}
+*/
+export const ADD_STOCK_PICK = 'ADD_STOCK_PICK';
+export function addNewStockPick(searchValue, expandAllValue, selectAllStocksValue) {
+  var searchValueSplit = searchValue.split(' | ', 2);
+  const stockContainer = Map({
+    ticker: searchValueSplit[0].trim(),
+    name: searchValueSplit[1].trim(),
+    settings: Map({
+      showStockDetail: expandAllValue,
+      isChecked: selectAllStocksValue
+    }),
+    data: Map({
+    })
+  })
   return {
     type: ADD_STOCK_PICK,
     payload: stockContainer

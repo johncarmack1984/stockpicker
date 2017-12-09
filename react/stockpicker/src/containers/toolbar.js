@@ -28,7 +28,7 @@ class Toolbar extends Component {
     this.props.toggleSortDesc(this.props.toolbarVariables.sortDesc);
   }
   render() {
-
+    /*
     let expanded;
     if (this.props.stockList.length > 0) {
       expanded = true;
@@ -42,22 +42,22 @@ class Toolbar extends Component {
     } else {
       expandArrowClass = 'ion-arrow-right-b stock-arrow'
     }
-
+    */
     return (
       <div className="toolbar">
-        <SmoothCollapse expanded={expanded}>
+        <SmoothCollapse expanded={true}>
           <div className="toolbar-container">
             <span className="toolbar-expand-collapse">
-              <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={this.props.toolbarVariables.selectAllStocks} />&nbsp;&nbsp;
+              <input type="checkbox" title="Check all?" className="stock-check" onChange={this.handleSelectAllChange} checked={true} />&nbsp;&nbsp;
               <a onClick={() => this.props.toggleExpandAll(this.props.toolbarVariables.expandAll)}>
-                <i className={expandArrowClass}>&nbsp;</i> all
+                <i className="ion-arrow-down-b stock-arrow">&nbsp;</i> all
               </a>
             </span>
             <span className="toolbar-select-timeframe-sort-by">
               timeFrame&nbsp;
                 <select
                   name="timeFrame"
-                  defaultValue={this.props.toolbarVariables.timeFrame}
+                  defaultValue="3M"
                   onChange={this.handleTimeFrameChange}>
                   <option value="1W">1W</option>
                   <option value="1M">1M</option>
@@ -102,6 +102,14 @@ export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 
 /*
 () => this.props.setTimeFrame(this.target)
+
+
+//Immutable migration
+
+{this.props.toolbarVariables.selectAllStocks}
+{this.props.toolbarVariables.timeFrame}
+
+
 
 // Loading number
 :

@@ -6,6 +6,7 @@ import SmoothCollapse from 'react-smooth-collapse';
 //import dotProp from 'dot-prop-immutable';
 import { Sparklines, SparklinesLine, SparklinesReferenceLine } from 'react-sparklines';
 import { toggleCheckBox, toggleShowStockDetail, dropStockPick } from '../actions/index';
+//import { Record, Map } from 'immutable';
 
 function round(value, decimals) {
   return (Number(Math.round(value+'e'+decimals)+'e-'+decimals));
@@ -32,12 +33,15 @@ class StockPick extends Component {
     this.props.dropStockPick(this.props.ticker);
   }
   render() {
+
     let arrowClass;
+    /*
     if (this.props.settings.showStockDetail === true) {
       arrowClass = 'ion-arrow-down-b stock-arrow'
     } else {
       arrowClass = 'ion-arrow-right-b stock-arrow'
     }
+    */
     if (this.props.data !== undefined) {
       if (this.props.data[this.props.toolbarVariables.timeFrame] !== undefined) {
         //var endDate = this.props.data[this.props.toolbarVariables.timeFrame].end_date;
@@ -52,7 +56,7 @@ class StockPick extends Component {
     return (
       <div className="stock-pick">
         <div className="stock-pick-header" key={this.props.ticker}>
-          <input type="checkbox" title="Include in analysis?" className="stock-check" onChange={this.handleToggleCheckBox} checked={this.props.settings.isChecked} />&nbsp;
+          <input type="checkbox" title="Include in analysis?" className="stock-check" onChange={this.handleToggleCheckBox} />&nbsp;
           <span className="stock-pick-click">
             <a onClick={this.handleToggleDetailClick.bind(this)} title={`${this.props.ticker} | ${this.props.name}`}>
               &nbsp;<i className={arrowClass}></i>&nbsp;
@@ -63,7 +67,7 @@ class StockPick extends Component {
           <span className="stock-pick-price" title={`${this.props.ticker} price $${price ? price : '-.--'}`}>$ {price ? price : '-.--'}</span>
         </div>
         <div className="stock-detail">
-          <SmoothCollapse expanded={this.props.settings.showStockDetail}>
+          <SmoothCollapse expanded={true}>
             <div className="stock-detail-container">
               <div className="small-chart" title={`$${prices ? round(prices[0],2) : 'startprice'}   -   $${prices ? round(prices.slice(-1)[0],2) : 'endprice'}`}>
                 <div className="stock-name-container">
@@ -114,6 +118,10 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(StockPick);
 
 /*
+
+checked={this.props.settings.isChecked}
+expanded={this.props.settings.showStockDetail}
+
 <div >
     <a className="js--ideal-weight"><span className="ideal-weight js--ideal-weight">18&#37;</span></a>
       <span className="num-shares">1</span>

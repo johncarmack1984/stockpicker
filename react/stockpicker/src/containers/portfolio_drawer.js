@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //import { CSSTransitionGroup } from 'react-transition-group';
-import StockPick from '../containers/stock_pick';
-import { SortableContainer, SortableElement } from 'react-sortable-hoc';
+//import StockPick from '../containers/stock_pick';
+import { SortableContainer/*, SortableElement*/ } from 'react-sortable-hoc';
 import { bindActionCreators } from 'redux';
 import { fetchStockData, } from '../actions/index';
 import { rearrangeStockList, } from '../actions/index';
+//import { List, Map, Record } from 'immutable';
 
+/*
 const SortableStockPick = SortableElement(({value}) =>
   <li>
     <StockPick
@@ -18,22 +20,13 @@ const SortableStockPick = SortableElement(({value}) =>
       data={value.data}/>
     </li>
 );
+*/
 
 const StockList = SortableContainer(({items}) => {
+  //items.map(item => console.log(item))
   return (
     <ul className="stock-picks">
-        {items
-          .map((value, index) => (
-          <SortableStockPick
-            key={`item-${index}`}
-            index={index}
-            value={value}
-            axis={'y'}
-            lockAxis={'y'}
-            helperClass="stock-pick"
-            transitionDuration={100}/>
-          ))
-        }
+
     </ul>
   );
 });
@@ -43,9 +36,10 @@ class PortfolioDrawer extends Component {
   getInitialProps() {  }
 
   componentDidMount() {
-    this.props.stockList.map((stockPick, index) => this.props.fetchStockData(stockPick, this.props.toolbarVariables.timeFrame, index))
+    //this.props.stockList.map((stockPick, index) => this.props.fetchStockData(stockPick, this.props.toolbarVariables.timeFrame, index))
   }
   componentWillUpdate(nextProps) {
+    /*
     if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame || nextProps.stockList.length !== this.props.stockList.length) {
       nextProps.stockList.map((stockPick, index) => {
         if (nextProps.stockList[index].data[nextProps.toolbarVariables.timeFrame] === undefined) {
@@ -54,9 +48,11 @@ class PortfolioDrawer extends Component {
         return true;
       })
     }
+    */
   }
   onSortEnd = ({ oldIndex, newIndex }) => { this.props.rearrangeStockList(oldIndex, newIndex) }
   render() {
+    //console.log(this.props)
     return (
         <StockList
           items={this.props.stockList}
@@ -89,6 +85,24 @@ function mapDispatchToProps(dispatch) {
 export default connect(mapStateToProps, mapDispatchToProps)(PortfolioDrawer);
 
 /*
+
+// Immutable transition
+
+{items
+  .map((value, index) => (
+  <SortableStockPick
+    key={`item-${index}`}
+    index={index}
+    value={value}
+    axis={'y'}
+    lockAxis={'y'}
+    helperClass="stock-pick"
+    transitionDuration={100}/>
+  ))
+}
+
+
+
 
 {this.props.stockList.map(this.renderList).reverse()}
 

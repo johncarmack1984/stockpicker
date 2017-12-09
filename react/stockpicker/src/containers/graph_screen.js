@@ -9,7 +9,7 @@ class GraphScreen extends Component {
       <div className="main-content">
         <br />
         <center>
-          {this.props.stockList.length} stocks in drawer<br />
+           stocks in drawer<br />
           <br />{} space here for reselect
         </center>
         <br />
@@ -27,3 +27,13 @@ function mapStateToProps({ stockData, stockList }) {
 }
 
 export default connect(mapStateToProps)(GraphScreen);
+
+
+/*
+
+Immutable migration
+
+{this.props.stockList.length}
+
+
+ */
