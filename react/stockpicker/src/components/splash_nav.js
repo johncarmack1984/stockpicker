@@ -8,6 +8,7 @@ class SplashNav extends Component {
     this.state = {
       navHidden: true,
       navIconClass: 'ion-navicon',
+      heightTransition: ".15s ease"
     }
   }
   // responsive nav menu
@@ -16,6 +17,11 @@ class SplashNav extends Component {
       this.setState({ navHidden: false })
     } else if ((window.innerWidth < 767) && (this.state.navIconClass === 'ion-navicon')) {
       this.setState({ navHidden: true })
+    }
+    if (window.innerWidth >= 700) {
+      this.setState({ heightTransition: ".0s ease" })
+    } else {
+      this.setState({ heightTransition: ".15s ease" })
     }
   }
   componentDidMount() {
@@ -54,7 +60,7 @@ class SplashNav extends Component {
             <nav>
               <SmoothCollapse
                 expanded={!this.state.navHidden}
-                heightTransition=".15s ease">
+                heightTransition={this.state.heightTransition}>
                 <Nav />
               </SmoothCollapse>
             </nav>
