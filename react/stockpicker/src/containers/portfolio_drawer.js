@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 //import { CSSTransitionGroup } from 'react-transition-group';
-//import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import StockPick from '../containers/stock_pick';
-//sortable list: https://github.com/clauderic/react-sortable-hoc
-
 import { SortableContainer, SortableElement } from 'react-sortable-hoc';
 import { bindActionCreators } from 'redux';
-import { fetchStockData, replaceStockData, } from '../actions/index';
+import { fetchStockData, } from '../actions/index';
 import { rearrangeStockList, } from '../actions/index';
 
 const SortableStockPick = SortableElement(({value}) =>
@@ -17,14 +14,18 @@ const SortableStockPick = SortableElement(({value}) =>
       ticker={value.ticker}
       name={value.name}
       value={value}
-      settings={value.settings}/>
+      settings={value.settings}
+      data={value.data}/>
     </li>
 );
 
 const SortablePortfolioList = SortableContainer(({items}) => {
   return (
     <ul className="stock-picks">
-        {items.map((value, index) => (
+        {items
+          //.sort((a, b) => a.age-b.age)
+          //.sort()
+          .map((value, index) => (
           <SortableStockPick
             key={`item-${index}`}
             index={index}
@@ -43,10 +44,17 @@ class PortfolioDrawer extends Component {
   getInitialProps() {  }
 
   componentDidMount() {
-    this.props.stockList.map(stockPick => this.props.fetchStockData(stockPick.ticker, this.props.toolbarVariables.timeFrame))
+    this.props.stockList.map((stockPick, index) => this.props.fetchStockData(stockPick, this.props.toolbarVariables.timeFrame, index))
   }
-
   componentWillUpdate(nextProps) {
+    if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame || nextProps.stockList.length !== this.props.stockList.length) {
+      nextProps.stockList.map((stockPick, index) => {
+        if (nextProps.stockList[index].data[nextProps.toolbarVariables.timeFrame] === undefined) {
+          this.props.fetchStockData(stockPick, nextProps.toolbarVariables.timeFrame, index)
+        }
+        return true;
+      })
+    }
   }
   onSortEnd = ({ oldIndex, newIndex }) => { this.props.rearrangeStockList(oldIndex, newIndex) }
   render() {
@@ -63,10 +71,10 @@ class PortfolioDrawer extends Component {
   }
 }
 
-function mapStateToProps({ stockList, toolbarVariables }) {
+function mapStateToProps({ stockList, toolbarVariables, }) {
   return {
     stockList,
-    toolbarVariables
+    toolbarVariables,
   };
 }
 
@@ -75,7 +83,6 @@ function mapDispatchToProps(dispatch) {
     {
       fetchStockData,
       rearrangeStockList,
-      replaceStockData
     },
     dispatch);
 }
@@ -84,10 +91,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(PortfolioDrawer);
 
 /*
 
-renderList(stockList) {
-  return (<StockPick key={stockList.ticker} ticker={stockList.ticker} name={stockList.name}/>)
-}
-
 {this.props.stockList.map(this.renderList).reverse()}
 
 <CSSTransitionGroup
@@ -95,32 +98,6 @@ renderList(stockList) {
   transitionEnterTimeout={250}
   transitionLeaveTimeout={250}>
 </CSSTransitionGroup>
-
-
-
-// non-sortable list
-
-
-Loading cell:
-//return this.props.stockData.map((stock) => {
-  //loadingNum = loadingNum - 1;
-  //return true;//
-//});
-
-/*
-renderLoadingBar() {
-  let expanded;
-  if (loadingNum > 0) {
-    expanded = true;
-  } else {
-    expanded = false;
-  }
-  return (
-    <SmoothCollapse expanded={expanded}>
-      <LoadingBar />
-    </SmoothCollapse>
-  )
-}
 
 
 miscellaneous code that has been useful at one point
@@ -151,46 +128,3 @@ miscellaneous code that has been useful at one point
 
 
 */
-
-/*
-this code got too complicated... it may or not may be useful.
-componentWillUpdate(nextProps) {
-  // first things first, if nextProps ain't these props
-  if (nextProps !== this.props) {
-    //console.log(nextProps)
-    this.props.stockList.map(stockPick => {
-      if (nextProps.toolbarVariables.timeFrame !== this.props.toolbarVariables.timeFrame) {
-        //console.log(nextProps.toolbarVariables.timeFrame)
-        if (nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame] !== undefined) {
-          //console.log(nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame])
-        }
-      } // <-- end of "if timeFrame changed"
-      // if there is already data for this stock in other timeFrames,
-      if (nextProps.stockData[stockPick.ticker] !== undefined) {
-        // AND the incoming data for this timeFrame  not YET undefined,
-        if (nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame] === undefined) {
-          // ... fetch data for the new timeFrame
-          this.props.replaceStockData(stockPick.ticker, nextProps.toolbarVariables.timeFrame)
-        }
-      }
-      /*
-      if (this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame] === 'undefined') {
-        console.log(`It's undefined right now for ${this.props.stockData[this.props.ticker][this.props.toolbarVariables.timeFrame]}`)
-      }
-      */
-      // if incoming props have new data for this ticker
-/*      if (nextProps.stockData[stockPick.ticker] !== this.props.stockData[stockPick.ticker]) {
-        //console.log(nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame])
-        // if incoming props have data for this ticker and timeFrame
-        if (nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame]) {
-          //console.log(nextProps.stockData[stockPick.ticker][nextProps.toolbarVariables.timeFrame])
-          //console.log(`${stockPick.ticker} ${nextProps.toolbarVariables.timeFrame} is in cache`)
-        } else {
-          //console.log(`need to fetch ${stockPick.ticker} ${nextProps.toolbarVariables.timeFrame}`)
-        }
-      } return true
-    }) // < -- end of stockList.map()
-  } // < -- end of "if props have changed"
-}
-
- */

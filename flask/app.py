@@ -47,7 +47,7 @@ def favicon():
 #@cross_origin()
 def fetch_stock_data(ticker, time_frame):
     start_date = get_start_date(time_frame)
-    name = quandl.Dataset('EOD/' + ticker).name.split(" (" + ticker + ")")[0]
+    #name = quandl.Dataset('EOD/' + ticker).name.split(" (" + ticker + ")")[0]
     stock = quandl.get("EOD/" + ticker + ".11", start_date=start_date)
     #dates = list(stock.reset_index()['Date'].dt.strftime(date_format="%Y-%m-%d"))
     prices = list(stock['Adj_Close'])
@@ -60,7 +60,7 @@ def fetch_stock_data(ticker, time_frame):
     #volatility_annual = variance_annual ** 0.5
     response = make_response(
                 jsonify(
-                    name = name,
+                    #name = name,
                     time_frame = time_frame,
                     ticker = ticker.upper(),
                     start_date = str(stock.head(1).reset_index()['Date'][0])[0:10],

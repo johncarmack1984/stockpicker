@@ -19,6 +19,7 @@ class Toolbar extends Component {
   }
 
   render() {
+
     let expanded;
     if (this.props.stockList.length > 0) {
       expanded = true;
@@ -85,12 +86,24 @@ export default connect(mapStateToProps, mapDispatchToProps)(Toolbar);
 /*
 () => this.props.setTimeFrame(this.target)
 
-// "select all"
+// Loading number
+:
+//return this.props.stockData.map((stock) => {
+  //loadingNum = loadingNum - 1;
+  //return true;//
+//});
 
-
-// "show all"
-
-// stuck on figuring out how to trigger toggle after variable changes
+let loadginNum;
+if (loadingNum > 0) {
+   = true;
+} else {
+  expanded = false;
+}
+return (
+  <SmoothCollapse expanded={expanded}>
+    <LoadingBar />
+  </SmoothCollapse>
+)
 
 /
 // "sorted by"

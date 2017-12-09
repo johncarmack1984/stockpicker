@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { addNewStockPick, fetchStockData } from '../actions/index';
+import { addNewStockPick } from '../actions/index';
 import Autosuggest from 'react-autosuggest';
 
 // import json for autocomplete
@@ -53,9 +53,8 @@ class SearchBar extends Component {
   };
   onFormSubmit(event) {
     event.preventDefault();
-    this.props.fetchStockData(this.state.value.split(' | ')[0], this.props.toolbarVariables.timeFrame)
     this.setState({ value: '' });
-    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll);
+    this.props.addNewStockPick(this.state.value, this.props.toolbarVariables.expandAll, this.props.toolbarVariables.selectAllStocks);
   };
   render() {
     const { value, suggestions } = this.state;
@@ -98,6 +97,6 @@ function mapStateToProps({ toolbarVariables }) {
   return { toolbarVariables, };
 }
 
-function mapDispatchToProps(dispatch) { return bindActionCreators({ addNewStockPick, fetchStockData }, dispatch); }
+function mapDispatchToProps(dispatch) { return bindActionCreators({ addNewStockPick }, dispatch); }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchBar);

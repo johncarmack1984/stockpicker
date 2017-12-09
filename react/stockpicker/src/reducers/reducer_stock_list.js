@@ -1,6 +1,9 @@
-import { ADD_STOCK_PICK, DROP_STOCK_PICK, REARRANGE_STOCK_LIST } from '../actions/index';
-import { TOGGLE_SHOW_STOCK_DETAIL,TOGGLE_EXPAND_ALL,TOGGLE_CHECK_BOX,TOGGLE_SELECT_ALL_STOCKS } from '../actions/index';
+import { ADD_STOCK_PICK, DROP_STOCK_PICK } from '../actions/index';
+import { FETCH_STOCK_DATA, REARRANGE_STOCK_LIST } from '../actions/index';
+import { TOGGLE_SHOW_STOCK_DETAIL, TOGGLE_EXPAND_ALL } from '../actions/index';
+import { TOGGLE_CHECK_BOX, TOGGLE_SELECT_ALL_STOCKS } from '../actions/index';
 import dotProp from 'dot-prop-immutable';
+import update from 'immutability-helper';
 
 const defaultPortfolio = [
   {
@@ -10,6 +13,8 @@ const defaultPortfolio = [
       showStockDetail: true,
       isChecked: true
     },
+    data: {
+    }
   },
   {
     ticker: 'DIA',
@@ -18,7 +23,10 @@ const defaultPortfolio = [
       showStockDetail: true,
       isChecked: true
     },
+    data: {
+    }
   },
+
   {
     ticker: 'SPY',
     name: 'SPDR S&P 500',
@@ -26,7 +34,10 @@ const defaultPortfolio = [
       showStockDetail: true,
       isChecked: true
     },
+    data: {
+    }
   },
+  /*
   {
     ticker: 'EWG',
     name: 'iShares MSCI Germany Index Fund',
@@ -34,7 +45,10 @@ const defaultPortfolio = [
       showStockDetail: true,
       isChecked: true
     },
+    data: {
+    }
   }
+  */
 ]
 
 function arrayMoveImmutable(array, previousIndex, newIndex) {
@@ -68,8 +82,9 @@ export default function(state, action) {
   }
   switch (action.type) {
   case ADD_STOCK_PICK:
-    //return state.concat([action.payload]);
     return [ action.payload, ...state ];
+  case FETCH_STOCK_DATA:
+    return update(state, {[state.indexOf(action.meta.stockPick)]: {data: {$merge: {[action.payload.data.time_frame]: action.payload.data}}}});
   case TOGGLE_SHOW_STOCK_DETAIL:
     return dotProp.toggle(state, `${state.indexOf(action.payload)}.settings.showStockDetail`);
   case TOGGLE_CHECK_BOX:
